@@ -1,0 +1,2 @@
+{"type":"message","timestamp":"2026-05-08T10:05:00Z","sessionId":"sess-1","message":{"role":"user","model":"claude-opus-4-7","usage":{"input_tokens":100,"output_tokens":0}}}
+{"type":"message","timestamp":"2026-05-08T10:06:00Z","sessionId":"sess-1","message":{"role":"assistant","model":"claude-opus-4-7","usage":{"input_tokens":0,"output_tokens":250,"cache_read_input_tokens":30}}}

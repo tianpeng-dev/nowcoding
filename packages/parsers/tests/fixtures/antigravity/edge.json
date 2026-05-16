@@ -1,0 +1,18 @@
+{
+  "trajectory": {
+    "metadata": {
+      "workspaces": [{ "workspaceFolderAbsoluteUri": "file:///Users/peng/project-b" }]
+    },
+    "generatorMetadata": [
+      {
+        "chatModel": {
+          "model": "MODEL_PLACEHOLDER_M47",
+          "chatStartMetadata": { "createdAt": "2026-05-14T12:05:00.000Z" },
+          "retryInfos": [
+            { "usage": { "responseId": "duplicate-response", "inputTokens": 7, "outputTokens": 5 } }
+          ]
+        }
+      }
+    ]
+  }
+}

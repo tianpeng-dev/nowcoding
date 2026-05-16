@@ -1,0 +1,24 @@
+{
+  "trajectory": {
+    "metadata": { "workspaces": [{ "repository": { "computedName": "repo-a" } }] },
+    "generatorMetadata": [
+      {
+        "chatModel": {
+          "responseModel": "claude-sonnet-4-6-thinking",
+          "chatStartMetadata": { "createdAt": "2026-05-14T12:00:00.000Z" },
+          "retryInfos": [
+            {
+              "usage": {
+                "responseId": "response-a",
+                "inputTokens": 12,
+                "outputTokens": 8,
+                "cacheReadTokens": 4,
+                "thinkingOutputTokens": 3
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

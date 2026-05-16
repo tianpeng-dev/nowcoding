@@ -1,0 +1,30 @@
+{
+  "id": "amp-thread-b",
+  "created": "2026-05-14T05:10:00.000Z",
+  "messages": [
+    {
+      "role": "user",
+      "timestamp": "2026-05-14T05:10:00.000Z"
+    },
+    {
+      "role": "assistant",
+      "timestamp": "2026-05-14T05:11:00.000Z",
+      "usage": {
+        "model": "gpt-4.1",
+        "inputTokens": 5,
+        "outputTokens": 11,
+        "cacheReadInputTokens": 2
+      }
+    },
+    {
+      "role": "assistant",
+      "timestamp": "2026-05-14T05:12:00.000Z",
+      "usage": {
+        "model": "empty",
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "cacheReadInputTokens": 0
+      }
+    }
+  ]
+}

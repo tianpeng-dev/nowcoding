@@ -1,0 +1,2 @@
+{"timestamp":"2026-05-14T04:00:00.000Z","type":"user","cwd":"/Users/peng/work/repo-a","uuid":"qwen-user-1"}
+{"timestamp":"2026-05-14T04:01:00.000Z","type":"assistant","cwd":"/Users/peng/work/repo-a","model":"qwen3-coder-plus","uuid":"qwen-assistant-1","usageMetadata":{"promptTokenCount":20,"cachedContentTokenCount":4,"candidatesTokenCount":10,"thoughtsTokenCount":2}}

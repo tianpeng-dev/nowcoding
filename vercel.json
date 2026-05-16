@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm turbo run build --filter=@nowcoding/web",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs",
+  "regions": ["sfo1"],
+  "crons": [
+    {
+      "path": "/api/cron/aggregate",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

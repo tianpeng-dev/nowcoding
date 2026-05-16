@@ -1,0 +1,25 @@
+{
+  "model": "gemini-2.5-pro",
+  "createTime": "2026-05-14T00:00:00.000Z",
+  "messages": [
+    {
+      "timestamp": "2026-05-14T00:01:00.000Z",
+      "role": "user",
+      "tokens": {
+        "input": 20,
+        "cached": 5,
+        "output": 0
+      }
+    },
+    {
+      "timestamp": "2026-05-14T00:02:00.000Z",
+      "role": "assistant",
+      "tokens": {
+        "input": 30,
+        "cached": 6,
+        "output": 12,
+        "thoughts": 2
+      }
+    }
+  ]
+}

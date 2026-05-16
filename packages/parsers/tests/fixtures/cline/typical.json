@@ -1,0 +1,12 @@
+[
+  {
+    "type": "ask",
+    "ts": 1778742000000
+  },
+  {
+    "type": "say",
+    "say": "api_req_started",
+    "ts": 1778742060000,
+    "text": "{\"tokensIn\":10,\"tokensOut\":6,\"cacheWrites\":3,\"cacheReads\":2,\"model\":\"claude-3.5-sonnet\"}"
+  }
+]

@@ -1,0 +1,43 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build
+.next/
+.turbo/
+dist/
+out/
+*.tsbuildinfo
+.tsbuildinfo
+
+# test
+coverage/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# vercel
+.vercel/
+
+# misc
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# nowcoding cli local state (do not commit user data)
+.nowcoding/
+.nowcoding-local/
+
+# drizzle
+drizzle/meta/
+.env*.local
+
+# internal planning and product-development docs (keep local, do not publish)
+docs/superpowers/
+nowcoding-prd.md
+nowcoding-tech-spec.md

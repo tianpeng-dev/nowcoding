@@ -1,0 +1,14 @@
+[
+  {
+    "type": "say",
+    "say": "api_req_started",
+    "ts": 1778742600000,
+    "text": "{\"tokensIn\":5,\"tokensOut\":7,\"cacheWrites\":1,\"cacheReads\":3}"
+  },
+  {
+    "type": "say",
+    "say": "api_req_started",
+    "ts": 1778742660000,
+    "text": "{\"tokensIn\":0,\"tokensOut\":0,\"cacheWrites\":0,\"cacheReads\":0}"
+  }
+]

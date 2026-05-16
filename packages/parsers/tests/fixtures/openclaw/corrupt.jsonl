@@ -1,0 +1,2 @@
+{not-json}
+{"type":"message","timestamp":"2026-05-14T08:20:00.000Z","message":{"role":"assistant","model":"claw-model","usage":{"input_tokens":3,"output_tokens":4}}}

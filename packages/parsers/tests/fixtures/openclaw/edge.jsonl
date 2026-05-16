@@ -1,0 +1,2 @@
+{"type":"message","timestamp":"2026-05-14T08:10:00.000Z","model":"profile-model","message":{"role":"assistant","usage":{"promptTokens":7,"completion_tokens":3,"cache_read_input_tokens":1}}}
+{"type":"message","timestamp":"2026-05-14T08:11:00.000Z","message":{"role":"assistant","model":"empty","usage":{}}}

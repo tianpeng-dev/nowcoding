@@ -1,0 +1,2 @@
+{not-json}
+{"timestamp":1778739600,"message":{"type":"StatusUpdate","payload":{"message_id":"valid-after-corrupt","token_usage":{"input_other":3,"output":4,"input_cache_read":1}}}}

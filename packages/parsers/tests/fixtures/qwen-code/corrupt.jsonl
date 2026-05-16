@@ -1,0 +1,2 @@
+{not-json}
+{"timestamp":"2026-05-14T04:20:00.000Z","type":"assistant","model":"qwen3-coder","uuid":"qwen-corrupt-valid","usageMetadata":{"promptTokenCount":5,"candidatesTokenCount":6}}

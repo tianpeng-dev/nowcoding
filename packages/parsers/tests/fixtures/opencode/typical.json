@@ -1,0 +1,18 @@
+{
+  "role": "assistant",
+  "time": {
+    "created": "2026-05-14T09:10:00.000Z"
+  },
+  "modelID": "opencode-json-model",
+  "path": {
+    "root": "/Users/peng/src/repo-json"
+  },
+  "tokens": {
+    "input": 6,
+    "output": 7,
+    "cache": {
+      "read": 3
+    },
+    "reasoning": 2
+  }
+}

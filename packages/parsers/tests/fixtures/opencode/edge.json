@@ -1,0 +1,11 @@
+{
+  "role": "assistant",
+  "time": {
+    "created": "2026-05-14T09:20:00.000Z"
+  },
+  "modelID": "opencode-edge-model",
+  "tokens": {
+    "input": 1,
+    "output": 2
+  }
+}

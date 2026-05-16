@@ -1,0 +1,46 @@
+{
+  "name": "nowcoding",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Show the world you're vibe coding — public AI coding activity broadcaster.",
+  "license": "MIT",
+  "homepage": "https://github.com/tianpeng-dev/nowcoding#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tianpeng-dev/nowcoding.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tianpeng-dev/nowcoding/issues"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "biome check .",
+    "pack:cli:check": "node scripts/check-cli-pack.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "smoke:seed": "node scripts/seed-smoke-data.mjs",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "turbo run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "db:generate": "pnpm --filter @nowcoding/db generate",
+    "db:push": "pnpm --filter @nowcoding/db push",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@electric-sql/pglite": "^0.4.5",
+    "@types/node": "^22.10.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "next": "^16.0.0",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

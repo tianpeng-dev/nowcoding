@@ -1,0 +1,2 @@
+{"type":"metadata","protocol_version":"1.9"}
+{"timestamp":1778738460.5,"message":{"type":"StatusUpdate","payload":{"message_id":"kimi-msg-a","token_usage":{"input_other":12,"output":8,"input_cache_read":3,"input_cache_creation":2}}}}

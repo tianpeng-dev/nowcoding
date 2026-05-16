@@ -1,0 +1,52 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": ["**/.env.*local", "**/.env"],
+  "globalEnv": [
+    "CRON_SECRET",
+    "DATABASE_URL",
+    "DATABASE_URL_UNPOOLED",
+    "NEON_PROJECT_ID",
+    "NOWCODING_API_TOKEN",
+    "NOWCODING_TIMEZONE",
+    "NOWCODING_USERNAME",
+    "NOWCODING_WEBSITE_URL",
+    "PGDATABASE",
+    "PGHOST",
+    "PGHOST_UNPOOLED",
+    "PGPASSWORD",
+    "PGUSER",
+    "POSTGRES_DATABASE",
+    "POSTGRES_HOST",
+    "POSTGRES_PASSWORD",
+    "POSTGRES_PRISMA_URL",
+    "POSTGRES_URL",
+    "POSTGRES_URL_NO_SSL",
+    "POSTGRES_URL_NON_POOLING",
+    "POSTGRES_USER"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

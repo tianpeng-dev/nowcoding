@@ -1,0 +1,4 @@
+{"timestamp":"2026-05-14T01:00:00.000Z","type":"session.start","data":{"context":{"gitRoot":"/Users/peng/work/repo-a","cwd":"/Users/peng/work/repo-a/packages/app"}}}
+{"timestamp":"2026-05-14T01:01:00.000Z","type":"user.message","data":{"text":"build a feature"}}
+{"timestamp":"2026-05-14T01:02:00.000Z","type":"assistant.message","data":{"text":"done"}}
+{"timestamp":"2026-05-14T01:03:00.000Z","type":"session.shutdown","data":{"modelMetrics":{"gpt-4.1":{"usage":{"inputTokens":20,"cacheReadTokens":4,"cacheWriteTokens":3,"outputTokens":9}}}}}

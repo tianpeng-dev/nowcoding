@@ -1,0 +1,29 @@
+{
+  "id": "amp-thread-a",
+  "created": "2026-05-14T05:00:00.000Z",
+  "messages": [
+    {
+      "role": "user"
+    },
+    {
+      "role": "assistant",
+      "usage": {
+        "cacheReadInputTokens": 3
+      }
+    }
+  ],
+  "usageLedger": {
+    "events": [
+      {
+        "timestamp": "2026-05-14T05:01:00.000Z",
+        "model": "claude-3.5-sonnet",
+        "fromMessageId": 0,
+        "toMessageId": 1,
+        "tokens": {
+          "input": 12,
+          "output": 7
+        }
+      }
+    ]
+  }
+}

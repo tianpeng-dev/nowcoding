@@ -1,0 +1,3 @@
+{"type":"session","id":"session-a","cwd":"/Users/peng/work/repo-a","version":"1.0"}
+{"type":"message","id":"msg-user-a","timestamp":"2026-05-14T06:00:00.000Z","message":{"role":"user","model":"pi-coder-large","timestamp":"2026-05-14T06:00:00.000Z"}}
+{"type":"message","id":"msg-assistant-a","timestamp":"2026-05-14T06:01:00.000Z","message":{"role":"assistant","model":"pi-coder-large","usage":{"input":14,"output":9,"cacheRead":4,"cacheWrite":3,"totalTokens":30}}}

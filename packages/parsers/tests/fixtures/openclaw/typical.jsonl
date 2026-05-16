@@ -1,0 +1,2 @@
+{"type":"message","timestamp":"2026-05-14T08:00:00.000Z","message":{"role":"user","model":"claw-model"}}
+{"type":"message","timestamp":"2026-05-14T08:01:00.000Z","message":{"role":"assistant","model":"claw-model","usage":{"input":10,"output":6,"cacheRead":2}}}

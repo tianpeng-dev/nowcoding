@@ -1,0 +1,1 @@
+-- Named profile state.db uses the same sessions schema as the default profile.

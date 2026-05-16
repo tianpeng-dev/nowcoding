@@ -1,0 +1,41 @@
+{
+  "name": "nowcoding",
+  "version": "0.0.0",
+  "private": false,
+  "description": "CLI for NowCoding — sync your AI coding activity to your public profile.",
+  "license": "MIT",
+  "homepage": "https://github.com/tianpeng-dev/nowcoding#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tianpeng-dev/nowcoding.git",
+    "directory": "apps/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/tianpeng-dev/nowcoding/issues"
+  },
+  "type": "module",
+  "bin": {
+    "nowcoding": "./bin/nowcoding.js"
+  },
+  "files": ["bin", "dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist .turbo"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@nowcoding/core": "workspace:*",
+    "@nowcoding/parsers": "workspace:*",
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "undici": "^7.21.0"
+  }
+}

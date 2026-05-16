@@ -1,0 +1,158 @@
+import { execFile } from 'node:child_process';
+import os from 'node:os';
+import { promisify } from 'node:util';
+import { CLOUD_DEFAULT_ENDPOINT, deviceTokenSchema } from '@nowcoding/core/cloud';
+import {
+  type Config,
+  loadConfig as defaultLoadConfig,
+  saveConfig as defaultSaveConfig,
+  normalizeConfig,
+} from '../lib/config.js';
+
+const execFileAsync = promisify(execFile);
+const POLL_INTERVAL_MS = 2_000;
+const MAX_POLL_ATTEMPTS = 60;
+
+export interface LoginOptions {
+  endpoint?: string;
+  arena?: boolean;
+}
+
+export interface FetchJsonInit {
+  method?: string;
+  body?: unknown;
+}
+
+export interface LoginDeps {
+  fetchJson?: (url: string, init?: FetchJsonInit) => Promise<unknown>;
+  openBrowser?: (url: string) => Promise<void>;
+  saveConfig?: (cfg: Config) => Promise<void>;
+  loadConfig?: typeof defaultLoadConfig;
+  sleep?: (ms: number) => Promise<void>;
+  hostname?: () => string;
+}
+
+interface StartResponse {
+  verificationUrl?: unknown;
+  pollToken?: unknown;
+  userCode?: unknown;
+}
+
+interface PollResponse {
+  status?: unknown;
+  endpoint?: unknown;
+  deviceToken?: unknown;
+  username?: unknown;
+  deviceId?: unknown;
+  arenaJoined?: unknown;
+}
+
+export async function defaultFetchJson(url: string, init: FetchJsonInit = {}): Promise<unknown> {
+  const headers: Record<string, string> = {};
+  const requestInit: RequestInit = {
+    method: init.method,
+    headers,
+  };
+
+  if (init.body !== undefined) {
+    headers['Content-Type'] = 'application/json';
+    requestInit.body = JSON.stringify(init.body);
+  }
+
+  const res = await fetch(url, requestInit);
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(
+      `Request failed (${res.status} ${res.statusText}) for ${url}${text ? `: ${text}` : ''}`,
+    );
+  }
+
+  return res.json();
+}
+
+export async function openWithSystem(url: string): Promise<void> {
+  if (process.platform === 'darwin') {
+    await execFileAsync('open', [url]);
+    return;
+  }
+  if (process.platform === 'win32') {
+    await execFileAsync('cmd', ['/c', 'start', '', url]);
+    return;
+  }
+  await execFileAsync('xdg-open', [url]);
+}
+
+export async function runLogin(opts: LoginOptions = {}, deps: LoginDeps = {}): Promise<void> {
+  const endpoint = (opts.endpoint ?? CLOUD_DEFAULT_ENDPOINT).replace(/\/$/, '');
+  const fetchJson = deps.fetchJson ?? defaultFetchJson;
+  const openBrowser = deps.openBrowser ?? openWithSystem;
+  const saveConfig = deps.saveConfig ?? defaultSaveConfig;
+  const loadConfig = deps.loadConfig ?? defaultLoadConfig;
+  const sleep = deps.sleep ?? ((ms: number) => new Promise((resolve) => setTimeout(resolve, ms)));
+  const hostname = deps.hostname ?? os.hostname;
+
+  const started = (await fetchJson(`${endpoint}/api/auth/cli/start`, {
+    method: 'POST',
+    body: {
+      deviceName: hostname(),
+      joinArena: opts.arena !== false,
+    },
+  })) as StartResponse;
+
+  if (typeof started.verificationUrl !== 'string' || started.verificationUrl.length === 0) {
+    throw new Error('Login start response did not include a verification URL.');
+  }
+  if (typeof started.pollToken !== 'string' || started.pollToken.length === 0) {
+    throw new Error('Login start response did not include a poll token.');
+  }
+  if (typeof started.userCode !== 'string' || started.userCode.length === 0) {
+    throw new Error('Login start response did not include a user code.');
+  }
+
+  console.log(`Open this URL to finish login: ${started.verificationUrl}`);
+  console.log(`Enter this device code: ${started.userCode}`);
+  try {
+    await openBrowser(started.verificationUrl);
+  } catch {
+    console.warn(
+      '[nowcoding] Could not open browser automatically. Use the printed URL to continue.',
+    );
+  }
+
+  const current = await loadConfig();
+
+  for (let attempt = 0; attempt < MAX_POLL_ATTEMPTS; attempt += 1) {
+    const polled = (await fetchJson(`${endpoint}/api/auth/cli/poll`, {
+      method: 'POST',
+      body: {
+        pollToken: started.pollToken,
+      },
+    })) as PollResponse;
+
+    if (polled.status === 'complete') {
+      const deviceToken = deviceTokenSchema.parse(polled.deviceToken);
+      const username = typeof polled.username === 'string' ? polled.username : null;
+      const deviceId = typeof polled.deviceId === 'string' ? polled.deviceId : null;
+      const configEndpoint = typeof polled.endpoint === 'string' ? polled.endpoint : endpoint;
+      const nextConfig = normalizeConfig({
+        ...(current ?? {}),
+        mode: 'cloud',
+        endpoint: configEndpoint,
+        apiToken: deviceToken,
+        cloud: {
+          username,
+          deviceId,
+          arenaJoined: polled.arenaJoined === true,
+        },
+      });
+
+      await saveConfig(nextConfig);
+      console.log(`Logged in to NowCoding Cloud as ${username ?? 'unknown'}.`);
+      return;
+    }
+
+    await sleep(POLL_INTERVAL_MS);
+  }
+
+  throw new Error('Login timed out waiting for browser verification.');
+}

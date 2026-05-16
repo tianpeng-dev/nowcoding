@@ -1,0 +1,9 @@
+NowCoding is inspired by vibe-usage (https://github.com/peeerdat/vibe-usage).
+
+The 18 parser strategies, 30-minute bucket aggregation logic, and the
+ingest protocol shape are derived in spirit from that project. NowCoding
+adds public-facing identity (profile + SVG badges + README cards) and
+single-tenant Vercel-native deployment.
+
+If you maintain a parser-aware tool that NowCoding helps observe, see
+docs/parsers.md for the supported list.

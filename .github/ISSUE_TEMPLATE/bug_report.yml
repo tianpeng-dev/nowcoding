@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible NowCoding bug
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include prompt text, API tokens, OAuth secrets, database dumps,
+        or private local logs. For security issues, use SECURITY.md instead.
+  - type: input
+    id: version
+    attributes:
+      label: NowCoding version
+      placeholder: "nowcoding --version"
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - CLI sync
+        - Parser
+        - Daemon
+        - Self-host web
+        - SVG card or badge
+        - Docs
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "OS, Node.js version, package manager, deployment target"
