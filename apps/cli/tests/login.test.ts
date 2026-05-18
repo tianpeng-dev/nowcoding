@@ -12,13 +12,12 @@ describe('login command', () => {
   });
 
   it('starts CLI auth with Arena preselected and saves returned device config', async () => {
-    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     const fetchJson = vi
       .fn()
       .mockResolvedValueOnce({
-        verificationUrl: 'https://cloud.example.com/login/device',
+        verificationUrl: 'https://cloud.example.com/login/device?status=connected',
         pollToken: 'poll_123',
-        userCode: 'NC-ABCD-2345',
       })
       .mockResolvedValueOnce({
         status: 'complete',
@@ -50,7 +49,15 @@ describe('login command', () => {
         joinArena: true,
       },
     });
-    expect(openBrowser).toHaveBeenCalledWith('https://cloud.example.com/login/device');
+    expect(openBrowser).toHaveBeenCalledWith(
+      'https://cloud.example.com/login/device?status=connected',
+    );
+    expect(log).toHaveBeenCalledWith(
+      'Open this URL to finish login: https://cloud.example.com/login/device?status=connected',
+    );
+    expect(log).toHaveBeenCalledWith(
+      'Finish login in your browser. The CLI will continue automatically.',
+    );
     expect(saveConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         mode: 'cloud',
@@ -128,30 +135,42 @@ describe('login command', () => {
     expect(fetchJson).toHaveBeenCalledTimes(1);
   });
 
-  it('rejects immediately when start response omits userCode', async () => {
-    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+  it('continues login when start response omits userCode', async () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     const openBrowser = vi.fn().mockResolvedValue(undefined);
-    const fetchJson = vi.fn().mockResolvedValueOnce({
-      verificationUrl: 'https://cloud.example.com/login/device',
-      pollToken: 'poll_123',
-    });
+    const saveConfig = vi.fn().mockResolvedValue(undefined);
+    const fetchJson = vi
+      .fn()
+      .mockResolvedValueOnce({
+        verificationUrl: 'https://cloud.example.com/login/device',
+        pollToken: 'poll_123',
+      })
+      .mockResolvedValueOnce({
+        status: 'complete',
+        deviceToken,
+        username: 'peng',
+        deviceId: 'dev_123',
+        arenaJoined: true,
+      });
 
-    await expect(
-      runLogin(
-        { endpoint },
-        {
-          fetchJson,
-          openBrowser,
-          saveConfig: vi.fn().mockResolvedValue(undefined),
-          loadConfig: vi.fn().mockResolvedValue(null),
-          sleep: vi.fn().mockResolvedValue(undefined),
-          hostname: () => 'peng-mac',
-        },
-      ),
-    ).rejects.toThrow('Login start response did not include a user code.');
+    await runLogin(
+      { endpoint },
+      {
+        fetchJson,
+        openBrowser,
+        saveConfig,
+        loadConfig: vi.fn().mockResolvedValue(null),
+        sleep: vi.fn().mockResolvedValue(undefined),
+        hostname: () => 'peng-mac',
+      },
+    );
 
-    expect(openBrowser).not.toHaveBeenCalled();
-    expect(fetchJson).toHaveBeenCalledTimes(1);
+    expect(openBrowser).toHaveBeenCalledWith('https://cloud.example.com/login/device');
+    expect(log).toHaveBeenCalledWith(
+      'Finish login in your browser. The CLI will continue automatically.',
+    );
+    expect(log).not.toHaveBeenCalledWith(expect.stringContaining('Fallback device code:'));
+    expect(saveConfig).toHaveBeenCalled();
   });
 
   it('prints verification URL and keeps polling when opening the browser fails', async () => {
@@ -188,7 +207,10 @@ describe('login command', () => {
     expect(log).toHaveBeenCalledWith(
       'Open this URL to finish login: https://cloud.example.com/login/device',
     );
-    expect(log).toHaveBeenCalledWith('Enter this device code: NC-ABCD-2345');
+    expect(log).toHaveBeenCalledWith(
+      'Finish login in your browser. The CLI will continue automatically.',
+    );
+    expect(log).toHaveBeenCalledWith('Fallback device code: NC-ABCD-2345');
     expect(warn).toHaveBeenCalledWith(
       '[nowcoding] Could not open browser automatically. Use the printed URL to continue.',
     );

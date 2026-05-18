@@ -105,12 +105,11 @@ export async function runLogin(opts: LoginOptions = {}, deps: LoginDeps = {}): P
   if (typeof started.pollToken !== 'string' || started.pollToken.length === 0) {
     throw new Error('Login start response did not include a poll token.');
   }
-  if (typeof started.userCode !== 'string' || started.userCode.length === 0) {
-    throw new Error('Login start response did not include a user code.');
-  }
-
   console.log(`Open this URL to finish login: ${started.verificationUrl}`);
-  console.log(`Enter this device code: ${started.userCode}`);
+  console.log('Finish login in your browser. The CLI will continue automatically.');
+  if (typeof started.userCode === 'string' && started.userCode.length > 0) {
+    console.log(`Fallback device code: ${started.userCode}`);
+  }
   try {
     await openBrowser(started.verificationUrl);
   } catch {
