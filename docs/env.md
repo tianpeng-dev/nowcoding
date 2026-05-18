@@ -4,8 +4,8 @@ All variables are read in `apps/web/lib/env.ts` via Zod and fall back to safe
 defaults where possible.
 
 These variables configure the open-source self-hosted server. Hosted V2 Cloud is
-configured by `nowcoding login`; the CLI stores its Cloud device token locally
-after GitHub OAuth and Cloud upload consent.
+configured by `nowcoding login`; the CLI stores its scoped NowCoding device
+token locally after GitHub OAuth and Cloud device binding.
 
 Official hosted Cloud uses `https://nowcoding.cc`. Self-hosted deployments keep
 their own deployment origin through `NOWCODING_WEBSITE_URL`.
@@ -89,7 +89,8 @@ nowcoding login
 nowcoding daemon install
 ```
 
-`nowcoding login` opens GitHub OAuth and asks whether the CLI may upload
-aggregate usage buckets to NowCoding Cloud. "Join NowCoding Arena" is checked by
-default, but the prompt shows the public profile and leaderboard fields before
-confirmation and can be unchecked.
+`nowcoding login` opens GitHub OAuth, binds the current CLI session to the Cloud
+account, and saves a scoped NowCoding device token. The happy path returns to
+the terminal without a second manual device confirmation step. Arena remains a
+separate consent state; if public leaderboard participation or public fields
+change, the Cloud UI must show those fields before consent is saved.

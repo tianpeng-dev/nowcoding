@@ -113,11 +113,11 @@ Official Cloud will live under `https://nowcoding.cc`. Planned public surfaces:
 - `https://nowcoding.cc/<username>/badge/<type>.svg` for badges.
 - `https://nowcoding.cc/arena` for the opt-in public leaderboard.
 
-`nowcoding login` opens GitHub OAuth and asks for Cloud upload consent. The
-Cloud prompt also includes Arena consent: "Join NowCoding Arena" is checked by
-default, but the prompt shows the public fields before confirmation and you can
-uncheck it. Arena powers the hosted leaderboard; Cloud profile/card/badge upload
-can be used without joining Arena.
+`nowcoding login` opens GitHub OAuth and binds the CLI to your Cloud account
+with a scoped NowCoding device token. The normal path should return directly to
+the terminal after OAuth succeeds; extra confirmation is reserved for unusual
+risk or consent changes. Arena powers the hosted leaderboard and remains
+separate from Cloud profile/card/badge upload.
 
 Self-hosted mode does not contact NowCoding Cloud or Arena unless you explicitly
 run `nowcoding login` or `nowcoding arena connect`.

@@ -16,9 +16,10 @@ nowcoding daemon install
 The official hosted domain is `https://nowcoding.cc`. Cloud returns official
 profile, card, badge, and Arena links from that domain after login.
 
-`nowcoding login` opens GitHub OAuth and asks for Cloud upload consent. The
-prompt includes "Join NowCoding Arena", checked by default; before you confirm
-it shows the public fields used for the leaderboard and you can uncheck it.
+`nowcoding login` opens GitHub OAuth and binds this CLI to your Cloud account
+with a scoped NowCoding device token. The normal path should return directly to
+the terminal after OAuth succeeds. Extra confirmation is reserved for unusual
+sessions or changes to public-field consent.
 Cloud official card/profile links include V2 engagement fields such as
 estimated AI-assisted time saved, peak activity, milestone, top model, streak,
 and the 7-day token sparkline. Arena leaderboards can rank by tokens, estimated
