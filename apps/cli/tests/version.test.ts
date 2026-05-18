@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { main, VERSION } from '../src/index';
+import { VERSION, main } from '../src/index';
 
 describe('CLI version', () => {
   it('exports the npm release candidate version', () => {

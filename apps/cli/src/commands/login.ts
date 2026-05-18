@@ -95,7 +95,7 @@ export async function runLogin(opts: LoginOptions = {}, deps: LoginDeps = {}): P
     method: 'POST',
     body: {
       deviceName: hostname(),
-      joinArena: opts.arena !== false,
+      joinArena: opts.arena === true,
     },
   })) as StartResponse;
 

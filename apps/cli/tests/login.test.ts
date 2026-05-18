@@ -11,7 +11,7 @@ describe('login command', () => {
     vi.restoreAllMocks();
   });
 
-  it('starts CLI auth with Arena preselected and saves returned device config', async () => {
+  it('starts CLI auth without Arena by default and saves returned device config', async () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     const fetchJson = vi
       .fn()
@@ -25,7 +25,7 @@ describe('login command', () => {
         deviceToken,
         username: 'peng',
         deviceId: 'dev_123',
-        arenaJoined: true,
+        arenaJoined: false,
       });
     const openBrowser = vi.fn().mockResolvedValue(undefined);
     const saveConfig = vi.fn().mockResolvedValue(undefined);
@@ -46,7 +46,7 @@ describe('login command', () => {
       method: 'POST',
       body: {
         deviceName: 'peng-mac',
-        joinArena: true,
+        joinArena: false,
       },
     });
     expect(openBrowser).toHaveBeenCalledWith(
@@ -66,13 +66,13 @@ describe('login command', () => {
         cloud: {
           username: 'peng',
           deviceId: 'dev_123',
-          arenaJoined: true,
+          arenaJoined: false,
         },
       }),
     );
   });
 
-  it('starts CLI auth with Arena disabled when requested', async () => {
+  it('starts CLI auth with Arena enabled when requested', async () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
     const fetchJson = vi
       .fn()
@@ -90,7 +90,7 @@ describe('login command', () => {
       });
 
     await runLogin(
-      { endpoint, arena: false },
+      { endpoint, arena: true },
       {
         fetchJson,
         openBrowser: vi.fn().mockResolvedValue(undefined),
@@ -105,7 +105,7 @@ describe('login command', () => {
       method: 'POST',
       body: {
         deviceName: 'peng-mac',
-        joinArena: false,
+        joinArena: true,
       },
     });
   });
@@ -150,7 +150,7 @@ describe('login command', () => {
         deviceToken,
         username: 'peng',
         deviceId: 'dev_123',
-        arenaJoined: true,
+        arenaJoined: false,
       });
 
     await runLogin(
@@ -188,7 +188,7 @@ describe('login command', () => {
         deviceToken,
         username: 'peng',
         deviceId: 'dev_123',
-        arenaJoined: true,
+        arenaJoined: false,
       });
     const saveConfig = vi.fn().mockResolvedValue(undefined);
 
@@ -217,12 +217,12 @@ describe('login command', () => {
     expect(saveConfig).toHaveBeenCalled();
   });
 
-  it('routes --no-arena through main', async () => {
+  it('routes --arena through main', async () => {
     const login = await import('../src/commands/login');
     const runLoginSpy = vi.spyOn(login, 'runLogin').mockResolvedValue(undefined);
 
-    await main(['login', '--no-arena']);
+    await main(['login', '--arena']);
 
-    expect(runLoginSpy).toHaveBeenCalledWith({ arena: false });
+    expect(runLoginSpy).toHaveBeenCalledWith({ arena: true });
   });
 });
