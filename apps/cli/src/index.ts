@@ -9,7 +9,7 @@ import { runStatus } from './commands/status.js';
 import { type SyncOptions, runSync } from './commands/sync.js';
 import { installProxyDispatcher } from './lib/proxy.js';
 
-const VERSION = '0.0.0';
+export const VERSION = '0.1.0-alpha.1';
 
 const HELP = `nowcoding ${VERSION}
 
@@ -18,7 +18,7 @@ Usage:
   nowcoding sync [--dry-run] [--source <name>] [--strict] [--watch] [--watch-interval <ms>]
   nowcoding daemon [foreground|status|install|start|stop|restart|uninstall] [--interval-ms <ms>] [--bin <path>]
   nowcoding heartbeat [--source <name>] [--model <name>] [--project <name>]
-  nowcoding login [--no-arena]
+  nowcoding login [--arena]
   nowcoding arena [status|connect|disconnect]
   nowcoding gen-token
   nowcoding doctor
@@ -110,7 +110,7 @@ export async function main(argv: string[]): Promise<void> {
         break;
       case 'login':
         await runLogin({
-          ...(flags['no-arena'] === true ? { arena: false } : {}),
+          ...(flags.arena === true ? { arena: true } : {}),
         } satisfies LoginOptions);
         break;
       case 'arena':

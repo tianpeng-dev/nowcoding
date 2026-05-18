@@ -6,6 +6,8 @@ The original internal alpha roadmap shipped as a single milestone covering W1
 through W8.
 
 ### Added
+- Published `nowcoding@0.1.0-alpha.1` to npm under the `next` dist-tag for CLI smoke testing.
+- Verified main chain release readiness across npm CLI, Cloud GitHub OAuth login, Cloud sync, heartbeat, profile, card, badge, stats, now, and production smoke.
 - Monorepo skeleton: pnpm workspaces, Turborepo, Biome, Vitest, TypeScript 5.7, strict tsconfig.
 - 5-table Drizzle schema (`owner`, `buckets`, `sessions`, `sync_state`, `events`) with composite primary key on `sync_state` (P0-5) and `NOT NULL DEFAULT 'unknown'` on `hostname`/`project` so the unique index actually deduplicates (P0-4).
 - `@nowcoding/core`: 30-minute bucket aggregation, sha256(sessionId) extractor, streak computation, Zod ingest schemas, fail-closed privacy AND.

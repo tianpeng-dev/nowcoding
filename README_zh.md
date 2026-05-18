@@ -44,8 +44,10 @@ nowcoding daemon install
 - `https://nowcoding.cc/<username>/badge/<type>.svg`：SVG 徽章。
 - `https://nowcoding.cc/arena`：可选加入的公开排行榜。
 
-`nowcoding login` 会打开 GitHub OAuth，并在上传前展示 Cloud 上传授权。
-Arena 排行榜是独立 opt-in 状态：你可以使用官方 profile/card/badge，但不加入排行榜。
+`nowcoding login` 会打开 GitHub OAuth，并用受限的 NowCoding device token
+把本机 CLI 绑定到你的 Cloud 账号。正常路径中，OAuth 成功后 CLI 应直接登录成功；
+只有风险异常或公开字段授权变化时才需要额外确认。Arena 排行榜是独立 opt-in 状态：
+你可以使用官方 profile/card/badge，但不加入排行榜。
 
 ## 自托管部署
 

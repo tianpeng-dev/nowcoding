@@ -21,10 +21,11 @@ expected to return links such as `https://nowcoding.cc/<username>`,
 `https://nowcoding.cc/<username>/card.svg`, and
 `https://nowcoding.cc/<username>/badge/streak.svg`.
 
-`nowcoding login` opens GitHub OAuth, asks for Cloud upload consent, and returns
-official profile/card/badge links. "Join NowCoding Arena" is checked by default
-for leaderboard participation, but the confirmation prompt shows the public
-fields first and lets you uncheck it.
+`nowcoding login` opens GitHub OAuth, binds the CLI with a scoped NowCoding
+device token, and returns official profile/card/badge links. The normal path
+does not require a second manual device confirmation step. Risk-based
+confirmation is reserved for unusual sessions or public-field consent changes.
+Arena participation remains separate from Cloud profile/card/badge upload.
 
 ## One-click deploy
 
