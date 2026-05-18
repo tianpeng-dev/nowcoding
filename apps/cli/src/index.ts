@@ -9,7 +9,7 @@ import { runStatus } from './commands/status.js';
 import { type SyncOptions, runSync } from './commands/sync.js';
 import { installProxyDispatcher } from './lib/proxy.js';
 
-const VERSION = '0.0.0';
+export const VERSION = '0.1.0-alpha.1';
 
 const HELP = `nowcoding ${VERSION}
 

@@ -93,7 +93,7 @@ describe('postIngest', () => {
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: `Bearer ${apiToken}`,
-          'X-NowCoding-Client': expect.stringMatching(/^nowcoding-cli\//),
+          'X-NowCoding-Client': 'nowcoding-cli/0.1.0-alpha.1',
         }),
       }),
     );
