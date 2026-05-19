@@ -15,7 +15,7 @@
   },
   "type": "module",
   "bin": {
-    "nowcoding": "./bin/nowcoding.js"
+    "nowcoding": "bin/nowcoding.js"
   },
   "files": ["bin", "dist", "README.md", "LICENSE"],
   "scripts": {
