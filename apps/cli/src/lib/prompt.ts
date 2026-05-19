@@ -1,8 +1,13 @@
 import readline from 'node:readline/promises';
 import { type Readable, Writable } from 'node:stream';
 
-export async function ask(question: string, defaultValue?: string): Promise<string> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+export async function ask(
+  question: string,
+  defaultValue?: string,
+  input: Readable = process.stdin,
+  output: NodeJS.WritableStream = process.stdout,
+): Promise<string> {
+  const rl = readline.createInterface({ input, output });
   try {
     const suffix = defaultValue ? ` [${defaultValue}]` : '';
     const answer = (await rl.question(`${question}${suffix}: `)).trim();
@@ -29,10 +34,22 @@ export async function askHidden(
   }
 }
 
-export async function askYesNo(question: string, defaultNo = true): Promise<boolean> {
-  const def = defaultNo ? 'N' : 'Y';
-  const ans = (await ask(`${question} (y/N)`, def)).toLowerCase();
-  return ans === 'y' || ans === 'yes';
+export async function askYesNo(
+  question: string,
+  defaultNo = true,
+  input: Readable = process.stdin,
+  output: NodeJS.WritableStream = process.stdout,
+): Promise<boolean> {
+  const defaultAnswer = !defaultNo;
+  const suffix = defaultNo ? '[y/N]' : '[Y/n]';
+  const rl = readline.createInterface({ input, output });
+  try {
+    const answer = (await rl.question(`${question} ${suffix}:`)).trim().toLowerCase();
+    if (answer.length === 0) return defaultAnswer;
+    return answer === 'y' || answer === 'yes';
+  } finally {
+    rl.close();
+  }
 }
 
 class HiddenPromptOutput extends Writable {

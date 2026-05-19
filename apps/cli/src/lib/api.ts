@@ -3,7 +3,7 @@ import type { Config } from './config.js';
 
 export const CLIENT_VERSION = 'nowcoding-cli/0.1.0-alpha.1';
 
-type EndpointKind = 'ingest' | 'heartbeat' | 'settings';
+type EndpointKind = 'ingest' | 'heartbeat' | 'settings' | 'deviceSetup';
 
 function endpointPath(cfg: Config, kind: EndpointKind): string {
   if (cfg.mode === 'cloud') {
@@ -14,6 +14,8 @@ function endpointPath(cfg: Config, kind: EndpointKind): string {
         return '/api/cloud/usage/heartbeat';
       case 'settings':
         return '/api/account/settings';
+      case 'deviceSetup':
+        return '/api/cloud/device/setup';
     }
   }
 
@@ -24,6 +26,8 @@ function endpointPath(cfg: Config, kind: EndpointKind): string {
       return '/api/usage/heartbeat';
     case 'settings':
       return '/api/usage/settings';
+    case 'deviceSetup':
+      return '/api/device/setup';
   }
 }
 
@@ -51,6 +55,13 @@ export interface HeartbeatPayload {
 export interface HeartbeatResponse {
   ok: boolean;
   lastSeenAt: string;
+}
+
+export interface DeviceSetupStatusPayload {
+  automaticSyncEnabled: boolean;
+  source: 'login' | 'daemon' | 'manual';
+  skippedReason?: 'user_skipped' | 'non_interactive' | 'install_failed';
+  reportedAt: string;
 }
 
 export async function postIngest(
@@ -102,6 +113,27 @@ export async function postHeartbeat(
     throw new Error(`heartbeat failed: ${res.status} ${res.statusText} ${text}`);
   }
   return (await res.json()) as HeartbeatResponse;
+}
+
+export async function postDeviceSetupStatus(
+  cfg: Config,
+  payload: DeviceSetupStatusPayload,
+): Promise<{ ok: boolean }> {
+  const res = await fetch(endpointUrl(cfg, 'deviceSetup'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${cfg.apiToken}`,
+      'X-NowCoding-Client': CLIENT_VERSION,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`device setup status failed: ${res.status} ${res.statusText} ${text}`);
+  }
+  return (await res.json()) as { ok: boolean };
 }
 
 export interface ServerSettings {

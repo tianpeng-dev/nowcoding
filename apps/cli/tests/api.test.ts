@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchServerSettings, postHeartbeat, postIngest } from '../src/lib/api';
+import {
+  fetchServerSettings,
+  postDeviceSetupStatus,
+  postHeartbeat,
+  postIngest,
+} from '../src/lib/api';
 import type { Config } from '../src/lib/config';
 
 const makeConfig = (overrides: Partial<Config> = {}): Config => ({
@@ -160,5 +165,78 @@ describe('postHeartbeat', () => {
         observedAt: '2026-05-14T01:02:03.000Z',
       }),
     });
+  });
+});
+
+describe('postDeviceSetupStatus', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('posts cloud device setup status to the cloud endpoint', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true }),
+    } as Response);
+    const apiToken = `nc_dev_${'A'.repeat(43)}`;
+    const payload = {
+      automaticSyncEnabled: false,
+      source: 'login' as const,
+      skippedReason: 'non_interactive' as const,
+      reportedAt: '2026-05-19T01:02:03.000Z',
+    };
+
+    await expect(
+      postDeviceSetupStatus(
+        makeConfig({ mode: 'cloud', endpoint: 'https://nowcoding.cc', apiToken }),
+        payload,
+      ),
+    ).resolves.toEqual({ ok: true });
+
+    expect(fetchMock).toHaveBeenCalledWith('https://nowcoding.cc/api/cloud/device/setup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiToken}`,
+        'X-NowCoding-Client': 'nowcoding-cli/0.1.0-alpha.1',
+      },
+      body: JSON.stringify(payload),
+    });
+  });
+
+  it('posts self-hosted device setup status to the self-hosted endpoint', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true }),
+    } as Response);
+
+    await postDeviceSetupStatus(
+      makeConfig({ mode: 'self-hosted', endpoint: 'https://self.example.com' }),
+      {
+        automaticSyncEnabled: true,
+        source: 'manual',
+        reportedAt: '2026-05-19T01:02:03.000Z',
+      },
+    );
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe('https://self.example.com/api/device/setup');
+  });
+
+  it('rejects when device setup status returns non-OK', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: false,
+      status: 503,
+      statusText: 'Service Unavailable',
+      text: async () => 'temporarily down',
+    } as Response);
+
+    await expect(
+      postDeviceSetupStatus(makeConfig({ mode: 'cloud', endpoint: 'https://nowcoding.cc' }), {
+        automaticSyncEnabled: false,
+        source: 'login',
+        skippedReason: 'install_failed',
+        reportedAt: '2026-05-19T01:02:03.000Z',
+      }),
+    ).rejects.toThrow('device setup status failed: 503 Service Unavailable temporarily down');
   });
 });

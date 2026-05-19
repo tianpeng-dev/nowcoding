@@ -3,11 +3,18 @@ import os from 'node:os';
 import { promisify } from 'node:util';
 import { CLOUD_DEFAULT_ENDPOINT, deviceTokenSchema } from '@nowcoding/core/cloud';
 import {
+  type DeviceSetupStatusPayload,
+  postDeviceSetupStatus as defaultPostDeviceSetupStatus,
+} from '../lib/api.js';
+import {
   type Config,
   loadConfig as defaultLoadConfig,
   saveConfig as defaultSaveConfig,
   normalizeConfig,
 } from '../lib/config.js';
+import { askYesNo as defaultAskYesNo } from '../lib/prompt.js';
+import { runDaemon as defaultRunDaemon } from './daemon.js';
+import { runSyncOnce as defaultRunSyncOnce } from './sync.js';
 
 const execFileAsync = promisify(execFile);
 const POLL_INTERVAL_MS = 2_000;
@@ -30,6 +37,11 @@ export interface LoginDeps {
   loadConfig?: typeof defaultLoadConfig;
   sleep?: (ms: number) => Promise<void>;
   hostname?: () => string;
+  runSyncOnce?: typeof defaultRunSyncOnce;
+  askYesNo?: typeof defaultAskYesNo;
+  runDaemon?: typeof defaultRunDaemon;
+  isInteractive?: () => boolean;
+  reportSetupStatus?: (cfg: Config, payload: DeviceSetupStatusPayload) => Promise<{ ok: boolean }>;
 }
 
 interface StartResponse {
@@ -90,6 +102,12 @@ export async function runLogin(opts: LoginOptions = {}, deps: LoginDeps = {}): P
   const loadConfig = deps.loadConfig ?? defaultLoadConfig;
   const sleep = deps.sleep ?? ((ms: number) => new Promise((resolve) => setTimeout(resolve, ms)));
   const hostname = deps.hostname ?? os.hostname;
+  const runSyncOnce = deps.runSyncOnce ?? defaultRunSyncOnce;
+  const askYesNo = deps.askYesNo ?? defaultAskYesNo;
+  const runDaemon = deps.runDaemon ?? defaultRunDaemon;
+  const isInteractive =
+    deps.isInteractive ?? (() => process.stdin.isTTY === true && process.stdout.isTTY === true);
+  const reportSetupStatus = deps.reportSetupStatus ?? defaultPostDeviceSetupStatus;
 
   const started = (await fetchJson(`${endpoint}/api/auth/cli/start`, {
     method: 'POST',
@@ -147,6 +165,63 @@ export async function runLogin(opts: LoginOptions = {}, deps: LoginDeps = {}): P
 
       await saveConfig(nextConfig);
       console.log(`Logged in to NowCoding Cloud as ${username ?? 'unknown'}.`);
+      console.log('Syncing recent usage...');
+      try {
+        await runSyncOnce({ watch: false });
+      } catch {
+        console.warn(
+          '[nowcoding] First sync failed. Login is still complete; run `nowcoding sync` to retry.',
+        );
+      }
+
+      let automaticSyncEnabled = false;
+      let skippedReason: DeviceSetupStatusPayload['skippedReason'] | undefined = 'non_interactive';
+
+      if (isInteractive()) {
+        skippedReason = undefined;
+        const enableAutomaticSync = await askYesNo('Enable automatic background sync?', false);
+        if (enableAutomaticSync) {
+          console.log('Installing background sync...');
+          try {
+            await runDaemon({ action: 'install' });
+            try {
+              await runDaemon({ action: 'start' });
+            } catch {
+              await runDaemon({ action: 'restart' });
+            }
+            automaticSyncEnabled = true;
+            console.log('✓ Background sync enabled');
+          } catch {
+            automaticSyncEnabled = false;
+            skippedReason = 'install_failed';
+            console.warn(
+              '[nowcoding] Automatic background sync was not enabled. Run `nowcoding daemon install` and `nowcoding daemon start` to retry.',
+            );
+          }
+        } else {
+          skippedReason = 'user_skipped';
+          console.log('Skipped background sync. You can enable it later with:');
+          console.log('nowcoding daemon install && nowcoding daemon start');
+        }
+      }
+
+      try {
+        await reportSetupStatus(nextConfig, {
+          automaticSyncEnabled,
+          source: 'login',
+          ...(skippedReason ? { skippedReason } : {}),
+          reportedAt: new Date().toISOString(),
+        });
+      } catch {
+        console.warn('[nowcoding] Could not update onboarding sync status.');
+      }
+
+      const onboardingUrl = `${configEndpoint.replace(/\/$/, '')}/onboarding?source=cli-login`;
+      try {
+        await openBrowser(onboardingUrl);
+      } catch {
+        console.log(`Open onboarding: ${onboardingUrl}`);
+      }
       return;
     }
 
