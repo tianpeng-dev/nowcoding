@@ -1,6 +1,6 @@
 {
   "name": "nowcoding",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "private": false,
   "description": "CLI for NowCoding — sync your AI coding activity to your public profile.",
   "license": "MIT",
