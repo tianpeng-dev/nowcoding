@@ -3,7 +3,7 @@ import { VERSION, main } from '../src/index';
 
 describe('CLI version', () => {
   it('exports the npm release candidate version', () => {
-    expect(VERSION).toBe('0.1.0-alpha.1');
+    expect(VERSION).toBe('0.1.0-alpha.3');
   });
 
   it('prints the npm release candidate version', async () => {
@@ -11,6 +11,6 @@ describe('CLI version', () => {
 
     await main(['--version']);
 
-    expect(log).toHaveBeenCalledWith('0.1.0-alpha.1');
+    expect(log).toHaveBeenCalledWith('0.1.0-alpha.3');
   });
 });

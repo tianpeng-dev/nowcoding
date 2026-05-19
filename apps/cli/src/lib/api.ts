@@ -1,7 +1,7 @@
 import { gzipSync } from 'node:zlib';
 import type { Config } from './config.js';
 
-export const CLIENT_VERSION = 'nowcoding-cli/0.1.0-alpha.1';
+export const CLIENT_VERSION = 'nowcoding-cli/0.1.0-alpha.3';
 
 type EndpointKind = 'ingest' | 'heartbeat' | 'settings' | 'deviceSetup';
 

@@ -98,7 +98,7 @@ describe('postIngest', () => {
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: `Bearer ${apiToken}`,
-          'X-NowCoding-Client': 'nowcoding-cli/0.1.0-alpha.1',
+          'X-NowCoding-Client': 'nowcoding-cli/0.1.0-alpha.3',
         }),
       }),
     );
@@ -198,7 +198,7 @@ describe('postDeviceSetupStatus', () => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiToken}`,
-        'X-NowCoding-Client': 'nowcoding-cli/0.1.0-alpha.1',
+        'X-NowCoding-Client': 'nowcoding-cli/0.1.0-alpha.3',
       },
       body: JSON.stringify(payload),
     });
