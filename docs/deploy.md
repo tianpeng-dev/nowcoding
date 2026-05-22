@@ -41,7 +41,7 @@ deployment:
 5. From your local clone, run `DATABASE_URL='<from Postgres>' pnpm db:push` once.
 6. Visit `https://your-deployment.vercel.app/setup` and confirm Database, API token, Endpoint, and Profile are ready. The wizard checks that secrets exist but never renders secret values.
 7. Run `npx nowcoding init --endpoint https://your-deployment.vercel.app` and paste the token when prompted.
-8. Run `npx nowcoding sync`, then check `/`, `/card.svg`, `/badge/today.svg`, `/badge/live.svg`, `/api/stats`, `/api/now`, and `/api/heatmap`.
+8. Run `npx nowcoding sync` to broadcast your current AI coding presence, then check `/`, `/card.svg`, `/badge/today.svg`, `/badge/live.svg`, `/api/stats`, `/api/now`, and `/api/heatmap`.
 
 ## Manual flow
 
@@ -84,17 +84,19 @@ deployment:
    DATABASE_URL='<from Postgres>' pnpm db:push
    ```
 7. **Visit** `https://your-name.vercel.app/setup` to confirm everything wired up.
-8. **Run the CLI** locally:
+8. **Start broadcasting your AI coding presence** locally:
    ```bash
-   npx nowcoding init --endpoint https://your-name.vercel.app
-   npx nowcoding sync
-   npx nowcoding heartbeat
-   npx nowcoding sync --watch
+   npm install -g nowcoding
+   nowcoding init --endpoint https://your-name.vercel.app
+   nowcoding sync
+   nowcoding daemon install
+   nowcoding daemon start
+   nowcoding status
    ```
    Paste your token at the local prompt. Use `nowcoding init --token` only for
-   automation where an interactive prompt is not available.
-   Run `nowcoding heartbeat` for one-shot freshness. Run `nowcoding sync --watch`
-   for continuous live badge updates between full syncs.
+   automation where an interactive prompt is not available. `sync` publishes
+   the current snapshot, and the daemon keeps your profile, README card, and
+   live badge fresh in the background.
 
 ## What gets cached / rebuilt
 

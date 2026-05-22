@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     const db = getDb(env.DATABASE_URL);
     const owner = getOwnerProfile();
     const [stats, streak] = await Promise.all([
-      getPeriodStats(db, period),
+      getPeriodStats(db, period, { timezone: owner.timezone }),
       getStreak(db, { timezone: owner.timezone }),
     ]);
     return NextResponse.json(toPublicStatsResponse(stats, getServerPrivacy().showCost, streak), {

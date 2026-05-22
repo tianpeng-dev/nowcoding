@@ -11,6 +11,10 @@ export default defineConfig({
         find: /^@nowcoding\/core\/(.+)$/,
         replacement: new URL('./packages/core/src/$1.ts', import.meta.url).pathname,
       },
+      {
+        find: /^@\/(.+)$/,
+        replacement: new URL('./apps/web/$1', import.meta.url).pathname,
+      },
     ],
   },
   test: {

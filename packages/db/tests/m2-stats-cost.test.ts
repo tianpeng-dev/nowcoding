@@ -32,10 +32,31 @@ async function createBucketsTable() {
   `);
 }
 
+async function createSessionsTable() {
+  await pg.exec(`
+    CREATE TABLE sessions (
+      id BIGSERIAL PRIMARY KEY,
+      source TEXT NOT NULL,
+      project TEXT NOT NULL DEFAULT 'unknown',
+      session_hash TEXT NOT NULL,
+      first_message_at TIMESTAMPTZ NOT NULL,
+      last_message_at TIMESTAMPTZ NOT NULL,
+      duration_seconds INTEGER NOT NULL DEFAULT 0,
+      active_seconds INTEGER NOT NULL DEFAULT 0,
+      message_count INTEGER NOT NULL DEFAULT 0,
+      user_message_count INTEGER NOT NULL DEFAULT 0,
+      user_prompt_hours JSONB NOT NULL DEFAULT '[]',
+      hostname TEXT NOT NULL DEFAULT 'unknown',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
+}
+
 beforeEach(async () => {
   pg = new PGlite();
   db = drizzle(pg, { schema });
   await createBucketsTable();
+  await createSessionsTable();
 });
 
 afterEach(async () => {

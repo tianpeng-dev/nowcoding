@@ -2,8 +2,7 @@
 
 [English](README.md) | [简体中文](README_zh.md)
 
-Public AI coding activity for your GitHub profile, personal site, and team
-dashboards.
+NowCoding shows what builders are coding with AI right now, then turns that live activity into profiles, README cards, badges, and social proof.
 
 NowCoding collects usage from local AI coding tools, normalizes it into daily
 token and cost buckets, and publishes a privacy-aware profile with embeddable
@@ -103,6 +102,8 @@ badge, streak, and Arena leaderboard links without deploying your own server:
 npm install -g nowcoding
 nowcoding login
 nowcoding daemon install
+nowcoding daemon start
+nowcoding status
 ```
 
 Official Cloud will live under `https://nowcoding.cc`. Planned public surfaces:
@@ -134,6 +135,17 @@ Requirements:
 - pnpm 9 or newer.
 - A Vercel project.
 - A Supabase Postgres database or any standard Postgres database.
+
+Verify the GitHub source:
+
+```bash
+git clone https://github.com/tianpeng-dev/nowcoding.git
+cd nowcoding
+corepack enable
+pnpm install
+pnpm --filter nowcoding build
+node apps/cli/bin/nowcoding.js --help
+```
 
 Generate an ingest token:
 
@@ -175,6 +187,7 @@ Or install the daemon:
 npm install -g nowcoding
 nowcoding daemon install
 nowcoding daemon start
+nowcoding status
 ```
 
 Daemon install supports macOS launchd and Linux systemd user services. It

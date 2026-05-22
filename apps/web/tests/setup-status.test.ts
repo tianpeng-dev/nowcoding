@@ -71,10 +71,20 @@ describe('setup status view model', () => {
 
     expect(setup.endpointUrl).toBe('https://peng.vercel.app');
     expect(setup.dashboardUrl).toBe('https://vercel.com/dashboard');
-    expect(setup.cliInitCommand).toBe('npx nowcoding init --endpoint https://peng.vercel.app');
-    expect(setup.syncCommand).toBe('npx nowcoding sync');
-    expect(setup.heartbeatCommand).toBe('npx nowcoding heartbeat');
-    expect(setup.watchCommand).toBe('npx nowcoding sync --watch');
+    expect(setup).not.toHaveProperty('cliInitCommand');
+    expect(setup).not.toHaveProperty('syncCommand');
+    expect(setup).not.toHaveProperty('heartbeatCommand');
+    expect(setup).not.toHaveProperty('watchCommand');
+    expect(setup.primaryActionLabel).toBe('Start broadcasting');
+    expect(setup.primaryCommands).toEqual([
+      'npm install -g nowcoding',
+      'nowcoding init --endpoint https://peng.vercel.app',
+      'nowcoding sync',
+      'nowcoding daemon install',
+      'nowcoding daemon start',
+      'nowcoding status',
+    ]);
+    expect(setup.sourceCommands[0]).toBe('git clone https://github.com/tianpeng-dev/nowcoding.git');
     expect(JSON.stringify(setup)).not.toContain('<YOUR_TOKEN>');
     expect(JSON.stringify(setup)).not.toContain('--token');
     expect(JSON.stringify(setup)).not.toContain(`nc_live_${'A'.repeat(32)}`);

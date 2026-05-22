@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     try {
       const db = getDb(env.DATABASE_URL);
       const [stats, streak, activity] = await Promise.all([
-        getPeriodStats(db, period),
+        getPeriodStats(db, period, { now, timezone: owner.timezone }),
         getStreak(db, { timezone: owner.timezone, now }),
         getNowActivity(db, { timezone: owner.timezone, now }),
       ]);

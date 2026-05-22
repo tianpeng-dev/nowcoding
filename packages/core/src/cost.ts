@@ -15,6 +15,13 @@ export interface ModelPrice {
   outputUsdPerMillionTokens: number;
 }
 
+export interface PublicModelPrice {
+  id: string;
+  inputUsdPerMillionTokens: number;
+  cachedInputUsdPerMillionTokens: number;
+  outputUsdPerMillionTokens: number;
+}
+
 export interface CostEstimate {
   costUsd: number;
   matchedModel: string | null;
@@ -234,6 +241,22 @@ export function getModelPrice(model: string): ModelPrice | null {
     cachedInputUsdPerMillionTokens: matched.cachedInputUsdPerMillionTokens,
     outputUsdPerMillionTokens: matched.outputUsdPerMillionTokens,
   };
+}
+
+export function publicModelPrices(): PublicModelPrice[] {
+  return MODEL_PRICES.map(
+    ({
+      id,
+      inputUsdPerMillionTokens,
+      cachedInputUsdPerMillionTokens,
+      outputUsdPerMillionTokens,
+    }) => ({
+      id,
+      inputUsdPerMillionTokens,
+      cachedInputUsdPerMillionTokens,
+      outputUsdPerMillionTokens,
+    }),
+  );
 }
 
 export function estimateCostUsdDetailed(input: CostInput): CostEstimate {

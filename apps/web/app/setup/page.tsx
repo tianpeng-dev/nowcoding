@@ -15,21 +15,14 @@ export default function SetupPage() {
     },
   });
 
-  const runLocallyCommand = [
-    setup.cliInitCommand,
-    setup.syncCommand,
-    setup.heartbeatCommand,
-    setup.watchCommand,
-  ].join('\n');
-
   return (
     <main className="mx-auto max-w-4xl p-8">
       <header className="border-b border-neutral-200 pb-8 dark:border-neutral-800">
         <p className="text-sm uppercase tracking-wide text-neutral-500">Setup wizard</p>
-        <h1 className="mt-2 text-3xl font-semibold">Welcome, {owner.displayName}</h1>
+        <h1 className="mt-2 text-3xl font-semibold">Start broadcasting your AI coding presence</h1>
         <p className="mt-3 max-w-2xl text-neutral-500">
-          This page checks whether secrets exist and shows deployment readiness, but it never
-          displays secret values.
+          Welcome, {owner.displayName}. NowCoding publishes live status, cards, and badges after the
+          CLI syncs, while this setup page checks readiness without displaying secret values.
         </p>
       </header>
 
@@ -56,34 +49,17 @@ export default function SetupPage() {
         ))}
       </section>
 
-      <section className="mt-8 rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h2 className="font-semibold">Deploy settings</h2>
-            <p className="mt-1 text-sm text-neutral-500">
-              Manage missing environment variables and storage from Vercel.
-            </p>
-          </div>
-          <a
-            className="rounded-md bg-purple-600 px-3 py-2 text-sm font-medium text-white hover:bg-purple-700"
-            href={setup.dashboardUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Open Vercel dashboard
-          </a>
-        </div>
-      </section>
+      <CommandBlock
+        commands={setup.primaryCommands}
+        description="Install the global CLI, initialize this deployment endpoint, and start the background daemon that keeps your public presence fresh."
+        title={setup.primaryActionLabel}
+      />
 
-      <section className="mt-8 rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
-        <h2 className="font-semibold">Run locally</h2>
-        <p className="mt-1 text-sm text-neutral-500">
-          Initialize the CLI with this public endpoint and paste your token locally when prompted.
-        </p>
-        <pre className="mt-4 overflow-x-auto rounded bg-neutral-100 p-4 text-xs leading-6 dark:bg-neutral-900">
-          {runLocallyCommand}
-        </pre>
-      </section>
+      <CommandBlock
+        commands={setup.sourceCommands}
+        description="Review and build the collector from GitHub source before trusting it with your local activity."
+        title="Verify the open-source collector"
+      />
 
       <section className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
         <div className="rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
@@ -115,6 +91,25 @@ export default function SetupPage() {
       </section>
 
       <section className="mt-8 rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 className="font-semibold">Deploy settings</h2>
+            <p className="mt-1 text-sm text-neutral-500">
+              Manage missing environment variables and storage from Vercel.
+            </p>
+          </div>
+          <a
+            className="rounded-md bg-purple-600 px-3 py-2 text-sm font-medium text-white hover:bg-purple-700"
+            href={setup.dashboardUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Open Vercel dashboard
+          </a>
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
         <h2 className="font-semibold">After first sync</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <SetupLink href="/" label="Public profile" />
@@ -123,6 +118,26 @@ export default function SetupPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+function CommandBlock({
+  commands,
+  description,
+  title,
+}: {
+  commands: string[];
+  description: string;
+  title: string;
+}) {
+  return (
+    <section className="mt-8 rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
+      <h2 className="font-semibold">{title}</h2>
+      <p className="mt-1 text-sm text-neutral-500">{description}</p>
+      <pre className="mt-4 overflow-x-auto rounded bg-neutral-100 p-4 text-xs leading-6 dark:bg-neutral-900">
+        {commands.join('\n')}
+      </pre>
+    </section>
   );
 }
 

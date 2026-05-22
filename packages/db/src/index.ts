@@ -35,6 +35,7 @@ export type {
   NowActivityQueryOptions,
   Period,
   PeriodStats,
+  PeriodStatsOptions,
   RecordHeartbeatInput,
   StreakInfo,
   StreakQueryOptions,

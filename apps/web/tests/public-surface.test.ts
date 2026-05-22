@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  buildLivePresenceLabel,
   buildProfileSummary,
   formatCost,
   formatCostFromString,
@@ -15,6 +16,8 @@ const stats = {
   totalTokens: 1234567n,
   inputTokens: 700000n,
   outputTokens: 534567n,
+  sessionCount: 4,
+  activeSeconds: 3600,
   cachedInputTokens: 0n,
   reasoningOutputTokens: 0n,
   estimatedCostUsd: '12.345678',
@@ -93,6 +96,36 @@ describe('public surface helpers', () => {
     expect(formatLiveStatus('live')).toEqual({ label: 'Coding now', tone: 'live' });
     expect(formatLiveStatus('recent')).toEqual({ label: 'Active recently', tone: 'recent' });
     expect(formatLiveStatus('private')).toEqual({ label: 'Live hidden', tone: 'private' });
+  });
+
+  it('builds live presence copy for live sessions with source labels', () => {
+    expect(
+      buildLivePresenceLabel({
+        status: 'live',
+        currentSource: 'claude-code',
+        currentModel: 'claude-sonnet-4-6',
+      }),
+    ).toBe('Coding now with Claude Code');
+  });
+
+  it('builds live presence copy for recent sessions with source labels', () => {
+    expect(
+      buildLivePresenceLabel({
+        status: 'recent',
+        currentSource: 'gemini-cli',
+        currentModel: 'gemini-2.5-pro',
+      }),
+    ).toBe('Recently coding with Gemini CLI');
+  });
+
+  it('builds live presence copy for inactive sessions', () => {
+    expect(
+      buildLivePresenceLabel({
+        status: 'inactive',
+        currentSource: 'claude-code',
+        currentModel: null,
+      }),
+    ).toBe('Away from coding');
   });
 
   it('normalizes card periods from query strings', () => {

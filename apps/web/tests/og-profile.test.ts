@@ -12,6 +12,8 @@ const stats = {
   totalTokens: 1234567n,
   inputTokens: 700000n,
   outputTokens: 534567n,
+  sessionCount: 4,
+  activeSeconds: 3600,
   cachedInputTokens: 0n,
   reasoningOutputTokens: 0n,
   estimatedCostUsd: '12.345678',

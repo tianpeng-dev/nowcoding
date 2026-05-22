@@ -1,4 +1,5 @@
 import { isApiToken } from '@nowcoding/core/token';
+import { SOURCE_VERIFY_COMMANDS, selfHostedBroadcastCommands } from './cli-commands';
 import type { Env } from './env';
 
 export const SETUP_PARSER_SOURCES = [
@@ -55,10 +56,9 @@ export interface SetupParserRow {
 export interface SetupStatus {
   endpointUrl: string;
   dashboardUrl: string;
-  cliInitCommand: string;
-  syncCommand: string;
-  heartbeatCommand: string;
-  watchCommand: string;
+  primaryActionLabel: string;
+  primaryCommands: string[];
+  sourceCommands: string[];
   statusCards: SetupStatusCard[];
   privacyRows: SetupPrivacyRow[];
   parsers: SetupParserRow[];
@@ -96,10 +96,9 @@ export function buildSetupStatus(input: SetupStatusInput): SetupStatus {
   return {
     endpointUrl,
     dashboardUrl: 'https://vercel.com/dashboard',
-    cliInitCommand: `npx nowcoding init --endpoint ${endpointUrl}`,
-    syncCommand: 'npx nowcoding sync',
-    heartbeatCommand: 'npx nowcoding heartbeat',
-    watchCommand: 'npx nowcoding sync --watch',
+    primaryActionLabel: 'Start broadcasting',
+    primaryCommands: selfHostedBroadcastCommands(endpointUrl),
+    sourceCommands: [...SOURCE_VERIFY_COMMANDS],
     statusCards: [
       {
         key: 'database',

@@ -26,6 +26,12 @@ export interface ProfileSummary {
   milestoneLabel: string | null;
 }
 
+export interface LivePresenceLabelInput {
+  status: LiveStatus;
+  currentSource: string | null;
+  currentModel: string | null;
+}
+
 export function toNowResponse(
   activity: NowActivityInfo | null,
   privacy: NowPrivacy,
@@ -114,4 +120,34 @@ export function formatLiveStatus(status: LiveStatus): { label: string; tone: Sur
     private: 'Live hidden',
   } satisfies Record<LiveStatus, string>;
   return { label: labels[status], tone: status };
+}
+
+export function buildLivePresenceLabel(input: LivePresenceLabelInput): string {
+  const source = input.currentSource ? formatSourceLabel(input.currentSource) : null;
+  switch (input.status) {
+    case 'live':
+      return source ? `Coding now with ${source}` : 'Coding now';
+    case 'recent':
+      return source ? `Recently coding with ${source}` : 'Recently coding';
+    case 'idle':
+      return source ? `Taking a break from ${source}` : 'Taking a break';
+    case 'private':
+      return 'Live status private';
+    case 'inactive':
+      return 'Away from coding';
+  }
+}
+
+function formatSourceLabel(source: string): string {
+  const labels: Record<string, string> = {
+    codex: 'Codex',
+    'claude-code': 'Claude Code',
+    'gemini-cli': 'Gemini CLI',
+    opencode: 'OpenCode',
+    'qwen-code': 'Qwen Code',
+    'kimi-code': 'Kimi Code',
+    cline: 'Cline',
+    'roo-code': 'Roo Code',
+  };
+  return labels[source] ?? source;
 }

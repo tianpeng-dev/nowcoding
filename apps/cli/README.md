@@ -1,6 +1,6 @@
 # nowcoding
 
-CLI for syncing local AI coding activity to a NowCoding profile.
+NowCoding shows what builders are coding with AI right now, then turns that live activity into profiles, README cards, badges, and social proof.
 
 ## NowCoding Cloud
 
@@ -11,6 +11,8 @@ leaderboard links without deploying a self-hosted server:
 npm install -g nowcoding
 nowcoding login
 nowcoding daemon install
+nowcoding daemon start
+nowcoding status
 ```
 
 The official hosted domain is `https://nowcoding.cc`. Cloud returns official
@@ -27,6 +29,17 @@ cost, active time, streak, or `time_saved`.
 
 Self-hosted mode does not contact NowCoding Cloud or Arena unless you explicitly
 run `nowcoding login` or `nowcoding arena connect`.
+
+## Verify from GitHub source
+
+```sh
+git clone https://github.com/tianpeng-dev/nowcoding.git
+cd nowcoding
+corepack enable
+pnpm install
+pnpm --filter nowcoding build
+node apps/cli/bin/nowcoding.js --help
+```
 
 ## Self-hosted commands
 

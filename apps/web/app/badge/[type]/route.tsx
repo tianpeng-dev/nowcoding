@@ -22,6 +22,7 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ type: strin
 
   const env = getEnv();
   const owner = getOwnerProfile();
+  const now = new Date();
 
   let stats: { totalTokens: bigint; topModel: string | null } | null = null;
   let streak = { current: 0, longest: 0, lastActiveDate: null as string | null };
@@ -30,13 +31,13 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ type: strin
     try {
       const db = getDb(env.DATABASE_URL);
       if (type === 'streak') {
-        streak = await getStreak(db, { timezone: owner.timezone });
+        streak = await getStreak(db, { timezone: owner.timezone, now });
       } else if (type === 'live') {
-        const activity = await getNowActivity(db, { timezone: owner.timezone });
-        liveStatus = toPublicNowResponse(activity, getServerPrivacy()).status;
+        const activity = await getNowActivity(db, { timezone: owner.timezone, now });
+        liveStatus = toPublicNowResponse(activity, getServerPrivacy(), now).status;
       } else {
         const period: Period = type === 'today' ? '1d' : type === 'total' ? 'all' : '7d';
-        const r = await getPeriodStats(db, period);
+        const r = await getPeriodStats(db, period, { now, timezone: owner.timezone });
         stats = { totalTokens: r.totalTokens, topModel: r.topModel };
       }
     } catch (e) {

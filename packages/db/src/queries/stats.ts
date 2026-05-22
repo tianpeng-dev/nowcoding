@@ -3,13 +3,21 @@ import {
   highlightedMilestone,
   peakActivityWindow,
 } from '@nowcoding/core';
+import { toLocalDateKey } from '@nowcoding/core/heatmap';
 import { and, desc, gte, sql } from 'drizzle-orm';
 import type { Database } from '../client';
 import { buckets } from '../schema/buckets';
+import { sessions } from '../schema/sessions';
 
 export type Period = '1d' | '7d' | '30d' | 'all';
 
-export function periodStart(period: Period, now: Date = new Date()): Date {
+export interface PeriodStatsOptions {
+  now?: Date;
+  timezone?: string;
+}
+
+export function periodStart(period: Period, now: Date = new Date(), timezone?: string): Date {
+  if (period === '1d' && timezone) return startOfLocalDayUtc(now, timezone);
   const ms = { '1d': 1, '7d': 7, '30d': 30 }[period as '1d' | '7d' | '30d'];
   if (ms === undefined) return new Date(0);
   return new Date(now.getTime() - ms * 24 * 60 * 60 * 1000);
@@ -20,6 +28,8 @@ export interface PeriodStats {
   totalTokens: bigint;
   inputTokens: bigint;
   outputTokens: bigint;
+  sessionCount: number;
+  activeSeconds: number;
   cachedInputTokens: bigint;
   reasoningOutputTokens: bigint;
   estimatedCostUsd: string;
@@ -65,9 +75,54 @@ function utcHour(value: Date | string): number {
   return date.getUTCHours();
 }
 
-export async function getPeriodStats(db: Database, period: Period): Promise<PeriodStats> {
-  const start = periodStart(period);
+function startOfLocalDayUtc(now: Date, timezone: string): Date {
+  const [year, month, day] = toLocalDateKey(now, timezone).split('-').map(Number);
+  if (!year || !month || !day) {
+    throw new RangeError(`Unable to compute local day start for timezone ${timezone}`);
+  }
+
+  const localMidnightUtcGuess = Date.UTC(year, month - 1, day);
+  const firstOffset = timezoneOffsetMs(new Date(localMidnightUtcGuess), timezone);
+  const candidate = new Date(localMidnightUtcGuess - firstOffset);
+  const secondOffset = timezoneOffsetMs(candidate, timezone);
+  return new Date(localMidnightUtcGuess - secondOffset);
+}
+
+function timezoneOffsetMs(date: Date, timezone: string): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(date);
+  const value = (type: Intl.DateTimeFormatPartTypes) => {
+    const part = parts.find((item) => item.type === type)?.value;
+    if (!part) throw new RangeError(`Unable to compute timezone offset for ${timezone}`);
+    return Number(part);
+  };
+  const asUtc = Date.UTC(
+    value('year'),
+    value('month') - 1,
+    value('day'),
+    value('hour') % 24,
+    value('minute'),
+    value('second'),
+  );
+  return asUtc - date.getTime();
+}
+
+export async function getPeriodStats(
+  db: Database,
+  period: Period,
+  options: PeriodStatsOptions = {},
+): Promise<PeriodStats> {
+  const start = periodStart(period, options.now ?? new Date(), options.timezone);
   const where = period === 'all' ? undefined : gte(buckets.bucketStart, start);
+  const sessionWhere = period === 'all' ? undefined : gte(sessions.lastMessageAt, start);
 
   const totals = await db
     .select({
@@ -123,6 +178,26 @@ export async function getPeriodStats(db: Database, period: Period): Promise<Peri
     .from(buckets)
     .where(where ? and(where) : undefined);
 
+  const activeSecondsExpression =
+    period === 'all'
+      ? sql`greatest(${sessions.activeSeconds}, 0)`
+      : sql`case
+          when ${sessions.firstMessageAt} >= ${start}
+            then greatest(${sessions.activeSeconds}, 0)
+          else least(
+            greatest(${sessions.activeSeconds}, 0),
+            greatest(0, floor(extract(epoch from (${sessions.lastMessageAt} - ${start}))))
+          )
+        end`;
+
+  const sessionTotals = await db
+    .select({
+      sessionCount: sql<number>`count(*)::int`,
+      activeSeconds: sql<number>`coalesce(sum(${activeSecondsExpression}), 0)::int`,
+    })
+    .from(sessions)
+    .where(sessionWhere ? and(sessionWhere) : undefined);
+
   const head = totals[0] ?? {
     totalTokens: 0n,
     inputTokens: 0n,
@@ -170,6 +245,8 @@ export async function getPeriodStats(db: Database, period: Period): Promise<Peri
     totalTokens,
     inputTokens: BigInt(head.inputTokens ?? 0),
     outputTokens,
+    sessionCount: Number(sessionTotals[0]?.sessionCount ?? 0),
+    activeSeconds: Number(sessionTotals[0]?.activeSeconds ?? 0),
     cachedInputTokens: BigInt(head.cachedInputTokens ?? 0),
     reasoningOutputTokens,
     estimatedCostUsd: String(head.estimatedCostUsd ?? '0'),

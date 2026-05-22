@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_zh.md)
 
-把你的 AI 编程活动展示到 GitHub 主页、个人网站和团队看板。
+NowCoding 展示开发者此刻正在用 AI 创作什么，并把这种实时状态变成主页、README 卡片、徽章和可传播的社交证明。
 
 NowCoding 会从本地 AI 编程工具中采集 token 使用数据，聚合成按天统计的
 token、成本、活跃状态、streak 和模型分布，并生成可嵌入 GitHub README 的
@@ -34,6 +34,8 @@ SVG 卡片与徽章。你可以直接使用官方 Cloud，也可以自托管开�
 npm install -g nowcoding
 nowcoding login
 nowcoding daemon install
+nowcoding daemon start
+nowcoding status
 ```
 
 官方 Cloud 计划使用 `https://nowcoding.cc`：
@@ -59,6 +61,17 @@ nowcoding daemon install
 - pnpm 9 或更高版本。
 - Vercel 项目。
 - Supabase Postgres 或其他标准 Postgres 数据库。
+
+从 GitHub 源码验证：
+
+```bash
+git clone https://github.com/tianpeng-dev/nowcoding.git
+cd nowcoding
+corepack enable
+pnpm install
+pnpm --filter nowcoding build
+node apps/cli/bin/nowcoding.js --help
+```
 
 生成 ingest token：
 
@@ -98,6 +111,7 @@ npx nowcoding sync --watch
 npm install -g nowcoding
 nowcoding daemon install
 nowcoding daemon start
+nowcoding status
 ```
 
 更完整的部署说明见 [docs/deploy.md](docs/deploy.md) 和
