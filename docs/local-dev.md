@@ -149,8 +149,6 @@ unset NOWCODING_SMOKE_TOKEN
 
 ## Deferred after v1.0
 
-- Parser coverage remains uneven: `claude-code` is complete, 16 sources use
-  generic adapters, and Cursor remains opt-in only.
 - Account-level hosting, team instances, and in-app environment editing are not
   part of the single-tenant v1.0 release.
 
