@@ -1,4 +1,6 @@
-# nowcoding
+# NowCoding CLI
+
+[English](README.md) | [简体中文](README_zh.md)
 
 NowCoding shows what builders are coding with AI right now, then turns that live activity into profiles, README cards, badges, and social proof.
 
