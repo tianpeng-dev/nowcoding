@@ -1,62 +1,121 @@
 import type { StatsResponse } from '@nowcoding/core/schemas';
 
+export type UsageDashboardCardKey = 'tokens' | 'estimatedCost' | 'activeTime' | 'topModel';
+
 export interface UsageDashboardCard {
+  key: UsageDashboardCardKey;
   label: string;
   value: string;
   detail: string;
 }
 
 export interface UsageDashboardView {
-  title: 'Usage details';
-  description: 'A deeper breakdown behind your public NowCoding presence.';
+  title: string;
+  description: string;
   period: StatsResponse['period'];
   cards: UsageDashboardCard[];
 }
 
-export function buildUsageDashboardView(stats: StatsResponse): UsageDashboardView {
+export interface UsageDashboardMessages {
+  title: string;
+  description: string;
+  cards: {
+    tokens: string;
+    estimatedCost: string;
+    activeTime: string;
+    topModel: string;
+  };
+  totalDetail: string;
+  sessionsDetail: string;
+  shareDetail: string;
+  none: string;
+  hidden: string;
+  costLabels: Record<StatsResponse['costLabel'], string>;
+}
+
+export interface UsageDashboardOptions {
+  messages?: UsageDashboardMessages;
+  locale?: string;
+}
+
+export const DEFAULT_USAGE_DASHBOARD_MESSAGES = {
+  title: 'Usage details',
+  description: 'A deeper breakdown behind your public NowCoding presence.',
+  cards: {
+    tokens: 'Tokens',
+    estimatedCost: 'Estimated cost',
+    activeTime: 'Active time',
+    topModel: 'Top model',
+  },
+  totalDetail: '{period} total',
+  sessionsDetail: '{count} sessions',
+  shareDetail: '{share} share',
+  none: 'None',
+  hidden: 'Hidden',
+  costLabels: {
+    estimated: 'estimated',
+    hidden: 'hidden',
+  },
+} as const satisfies UsageDashboardMessages;
+
+export function buildUsageDashboardView(
+  stats: StatsResponse,
+  options: UsageDashboardOptions = {},
+): UsageDashboardView {
+  const messages = options.messages ?? DEFAULT_USAGE_DASHBOARD_MESSAGES;
+  const locale = options.locale ?? 'en';
   const cards: UsageDashboardCard[] = [
     {
-      label: 'Tokens',
-      value: compactNumber(stats.totalTokens),
-      detail: `${stats.period} total`,
+      key: 'tokens',
+      label: messages.cards.tokens,
+      value: compactNumber(stats.totalTokens, locale),
+      detail: interpolate(messages.totalDetail, { period: stats.period }),
     },
     {
-      label: 'Estimated cost',
-      value: stats.estimatedCostUsd === null ? 'Hidden' : formatUsd(stats.estimatedCostUsd),
-      detail: stats.costLabel,
+      key: 'estimatedCost',
+      label: messages.cards.estimatedCost,
+      value:
+        stats.estimatedCostUsd === null
+          ? messages.hidden
+          : formatUsd(stats.estimatedCostUsd, locale),
+      detail: messages.costLabels[stats.costLabel],
     },
   ];
 
   cards.push(
     {
-      label: 'Active time',
+      key: 'activeTime',
+      label: messages.cards.activeTime,
       value: formatActiveTime(stats.activeSeconds),
-      detail: `${stats.sessionCount} sessions`,
+      detail: interpolate(messages.sessionsDetail, { count: `${stats.sessionCount}` }),
     },
     {
-      label: 'Top model',
-      value: stats.topModel?.name ?? 'None',
-      detail: stats.topModel ? `${formatPercent(stats.topModel.share)} share` : '0% share',
+      key: 'topModel',
+      label: messages.cards.topModel,
+      value: stats.topModel?.name ?? messages.none,
+      detail: interpolate(messages.shareDetail, {
+        share: stats.topModel ? formatPercent(stats.topModel.share) : '0%',
+      }),
     },
   );
 
   return {
-    title: 'Usage details',
-    description: 'A deeper breakdown behind your public NowCoding presence.',
+    title: messages.title,
+    description: messages.description,
     period: stats.period,
     cards,
   };
 }
 
-export function compactNumber(value: number): string {
-  return Intl.NumberFormat('en', {
+export function compactNumber(value: number, locale = 'en'): string {
+  return Intl.NumberFormat(locale, {
     notation: 'compact',
     maximumFractionDigits: value >= 1_000 ? 1 : 0,
   }).format(value);
 }
 
-function formatUsd(value: number): string {
-  return Intl.NumberFormat('en-US', {
+function formatUsd(value: number, locale: string): string {
+  return Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
@@ -76,4 +135,8 @@ function formatActiveTime(seconds: number): string {
 
 function formatPercent(share: number): string {
   return `${Math.round(share * 100)}%`;
+}
+
+function interpolate(template: string, values: Record<string, string>): string {
+  return template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? `{${key}}`);
 }

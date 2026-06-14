@@ -8,8 +8,16 @@ export interface ModelSlice {
   tokens: number;
 }
 
-export function ModelPie({ data }: { data: ModelSlice[] }) {
-  if (data.length === 0) return <p className="text-sm text-neutral-500">No models yet.</p>;
+export function ModelPie({
+  data,
+  emptyLabel = 'No models yet.',
+  valueLabel = 'tokens',
+}: {
+  data: ModelSlice[];
+  emptyLabel?: string;
+  valueLabel?: string;
+}) {
+  if (data.length === 0) return <p className="text-sm text-neutral-500">{emptyLabel}</p>;
   const top = data.slice(0, 5);
   return (
     <div className="h-48 w-full">
@@ -36,7 +44,7 @@ export function ModelPie({ data }: { data: ModelSlice[] }) {
             }}
             labelStyle={{ color: '#f5f5f5' }}
             itemStyle={{ color: '#f5f5f5' }}
-            formatter={(v: number, name: string) => [`${v.toLocaleString()} tokens`, name]}
+            formatter={(v: number, name: string) => [`${v.toLocaleString()} ${valueLabel}`, name]}
           />
         </PieChart>
       </ResponsiveContainer>

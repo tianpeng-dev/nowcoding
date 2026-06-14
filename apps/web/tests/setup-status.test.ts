@@ -1,5 +1,46 @@
 import { describe, expect, it } from 'vitest';
-import { SETUP_PARSER_SOURCES, buildSetupStatus, resolvePublicOrigin } from '../lib/setup-status';
+import {
+  SETUP_PARSER_SOURCES,
+  type SetupStatusMessages,
+  buildSetupStatus,
+  resolvePublicOrigin,
+} from '../lib/setup-status';
+
+const zhMessages = {
+  primaryActionLabel: '开始广播',
+  statusCards: {
+    database: {
+      label: '数据库',
+      ready: 'DATABASE_URL 已配置。不要暴露连接字符串。',
+      missing: '缺少 DATABASE_URL。添加 Supabase Postgres pooler URL 后重新部署。',
+    },
+    token: {
+      label: 'API token',
+      ready: 'NOWCODING_API_TOKEN 已配置。设置页面永远不会展示它。',
+      missing: '缺少 NOWCODING_API_TOKEN。请在本地生成并添加到 Vercel。',
+      malformed: 'NOWCODING_API_TOKEN 格式不正确。请用 npx nowcoding gen-token 重新生成。',
+    },
+    endpoint: {
+      label: '端点',
+    },
+    profile: {
+      label: '主页',
+      default: 'NOWCODING_USERNAME 仍在使用默认值。请设置你的公开 handle。',
+      configured: '公开 handle 为 {username}。',
+    },
+  },
+  privacyRows: {
+    projectNames: '项目名称',
+    hostname: '主机名',
+    estimatedCost: '预估成本',
+    liveStatus: '实时状态',
+    uploadedWhenAllowed: '本地配置允许时上传',
+    hidden: '隐藏',
+    hiddenPublicly: '公开隐藏',
+    visibleAsEstimated: '以预估值展示',
+    visible: '可见',
+  },
+} satisfies SetupStatusMessages;
 
 describe('setup status view model', () => {
   it('uses explicit website url before Vercel system urls', () => {
@@ -169,6 +210,32 @@ describe('setup status view model', () => {
       { label: 'Estimated cost', value: 'hidden publicly' },
       { label: 'Live status', value: 'hidden publicly' },
     ]);
+  });
+
+  it('uses locale-aware setup copy when supplied', () => {
+    const setup = buildSetupStatus({
+      env: {
+        DATABASE_URL: 'postgres://example',
+        NOWCODING_USERNAME: 'peng',
+        NOWCODING_API_TOKEN: `nc_live_${'A'.repeat(32)}`,
+        NOWCODING_UPLOAD_PROJECT: true,
+      },
+      vercel: {},
+      messages: zhMessages,
+    });
+
+    expect(setup.primaryActionLabel).toBe('开始广播');
+    expect(setup.statusCards).toContainEqual({
+      key: 'profile',
+      label: '主页',
+      ok: true,
+      detail: '公开 handle 为 peng。',
+    });
+    expect(setup.privacyRows[0]).toEqual({
+      label: '项目名称',
+      value: '本地配置允许时上传',
+    });
+    expect(setup.primaryCommands).toContain('nowcoding sync');
   });
 
   it('lists all v1 parsers in registry order as waiting', () => {

@@ -1,0 +1,271 @@
+{
+  "common": {
+    "brand": "NowCoding",
+    "language": "Language",
+    "english": "English",
+    "simplifiedChinese": "Simplified Chinese"
+  },
+  "home": {
+    "title": "NowCoding",
+    "headline": "See what people are building right now",
+    "subtitle": "NowCoding turns live coding activity into a social profile for sharing the momentum of now.",
+    "primaryCta": "View usage",
+    "secondaryCta": "Set up NowCoding",
+    "profileEyebrow": "Builder profile",
+    "readmeCard": "README card",
+    "openCard": "Open card",
+    "readmeCardAlt": "{name} NowCoding README card",
+    "shareLinks": "Share links",
+    "liveBadge": "Live badge",
+    "streakBadge": "Streak badge",
+    "share": "Share",
+    "githubReadme": "GitHub README",
+    "personalSite": "Personal site",
+    "stats": {
+      "live": "Live",
+      "streak": "Streak",
+      "timeSaved": "Time saved",
+      "today": "Today",
+      "last7Days": "Last 7 days",
+      "peakActivity": "Peak activity",
+      "estimatedCost": "Estimated cost"
+    },
+    "tokensUnit": "tokens",
+    "emptyPrefix": "No coding activity yet. Run",
+    "emptyMiddle": "or",
+    "emptySuffix": "to populate this profile.",
+    "activityProof": "Activity proof",
+    "activityProofDescription": "The detailed usage trail behind the public profile.",
+    "usageDetails": "Usage details",
+    "allTimeTokens": "{tokens} all-time tokens",
+    "sevenDayActivity": "7-day activity",
+    "models": "Models",
+    "sources": "Sources",
+    "charts": {
+      "activityEmpty": "No activity yet.",
+      "modelsEmpty": "No models yet.",
+      "sourcesEmpty": "No tools yet.",
+      "valueLabel": "tokens"
+    },
+    "embed": "Embed"
+  },
+  "setup": {
+    "title": "Set up NowCoding",
+    "headline": "Connect your local activity to a shareable Now profile",
+    "description": "Follow the setup flow to publish coding activity without changing your development workflow.",
+    "eyebrow": "Setup wizard",
+    "pageHeadline": "Start broadcasting your AI coding presence",
+    "intro": "Welcome, {name}. NowCoding publishes live status, cards, and badges after the CLI syncs, while this setup page checks readiness without displaying secret values.",
+    "ready": "Ready",
+    "needsSetup": "Needs setup",
+    "statusCards": {
+      "database": {
+        "label": "Database",
+        "ready": "DATABASE_URL is configured. Do not expose the connection string.",
+        "missing": "DATABASE_URL is missing. Add a Supabase Postgres pooler URL, then redeploy."
+      },
+      "token": {
+        "label": "API token",
+        "ready": "NOWCODING_API_TOKEN is configured. The setup page never displays it.",
+        "missing": "NOWCODING_API_TOKEN is missing. Generate one locally and add it in Vercel.",
+        "malformed": "NOWCODING_API_TOKEN is malformed. Generate a new one with npx nowcoding gen-token."
+      },
+      "endpoint": {
+        "label": "Endpoint"
+      },
+      "profile": {
+        "label": "Profile",
+        "default": "NOWCODING_USERNAME is using the default value. Set your public handle.",
+        "configured": "Public handle is {username}."
+      }
+    },
+    "primaryActionLabel": "Start broadcasting",
+    "primaryCommandDescription": "Install the global CLI, initialize this deployment endpoint, and start the background daemon that keeps your public presence fresh.",
+    "sourceCommandTitle": "Verify the open-source collector",
+    "sourceCommandDescription": "Review and build the collector from GitHub source before trusting it with your local activity.",
+    "privacyGates": "Privacy gates",
+    "privacyRows": {
+      "projectNames": "Project names",
+      "hostname": "Hostname",
+      "estimatedCost": "Estimated cost",
+      "liveStatus": "Live status",
+      "uploadedWhenAllowed": "uploaded when local config allows",
+      "hidden": "hidden",
+      "hiddenPublicly": "hidden publicly",
+      "visibleAsEstimated": "visible as estimated",
+      "visible": "visible"
+    },
+    "parserReadiness": "Parser readiness",
+    "parserWaiting": "waiting",
+    "deploySettings": "Deploy settings",
+    "deploySettingsDescription": "Manage missing environment variables and storage from Vercel.",
+    "openVercelDashboard": "Open Vercel dashboard",
+    "afterFirstSync": "After first sync",
+    "publicProfile": "Public profile",
+    "readmeCard": "README card",
+    "shareImage": "Share image"
+  },
+  "usage": {
+    "title": "Usage",
+    "headline": "Your coding activity, ready to share",
+    "description": "Track the signals that make your current work visible across social surfaces.",
+    "eyebrow": "Analytics",
+    "pageHeadline": "Usage details",
+    "pageDescription": "A deeper breakdown behind your public NowCoding presence.",
+    "periodAria": "Usage period",
+    "periods": {
+      "today": "Today",
+      "sevenDays": "7d",
+      "thirtyDays": "30d",
+      "all": "All"
+    },
+    "viewPublicPresence": "View public presence",
+    "cards": {
+      "tokens": "Tokens",
+      "estimatedCost": "Estimated cost",
+      "activeTime": "Active time",
+      "topModel": "Top model"
+    },
+    "totalDetail": "{period} total",
+    "sessionsDetail": "{count} sessions",
+    "shareDetail": "{share} share",
+    "none": "None",
+    "hidden": "Hidden",
+    "costHidden": "Cost is hidden for this profile.",
+    "sections": {
+      "tokens": "Tokens",
+      "cost": "Cost",
+      "models": "Models",
+      "sources": "Sources"
+    },
+    "empty": {
+      "missingDatabase": "Connect DATABASE_URL to show private usage analytics for this profile.",
+      "loadFailed": "Usage analytics could not be loaded right now.",
+      "ready": "No coding activity exists for this period yet."
+    },
+    "charts": {
+      "activityEmpty": "No activity yet.",
+      "modelsEmpty": "No models yet.",
+      "sourcesEmpty": "No tools yet.",
+      "valueLabel": "tokens"
+    }
+  },
+  "models": {
+    "title": "Models",
+    "headline": "Model context for coding activity",
+    "description": "Reference model usage and pricing data without changing the public API contracts.",
+    "eyebrow": "Trust reference",
+    "pageHeadline": "Model pricing",
+    "pageDescription": "NowCoding uses these public per-token estimates to label usage costs. This page is a supporting reference for transparency, not a promise that provider billing will always match every account, region, discount, or request mode.",
+    "currentPriceTable": "Current price table",
+    "priceVersion": "Price version {version}",
+    "suggestCorrection": "Suggest a pricing correction",
+    "columns": {
+      "model": "Model",
+      "input": "Input",
+      "cachedInput": "Cached input",
+      "output": "Output"
+    },
+    "estimatorNote": "The estimator intentionally stays conservative: it publishes the table NowCoding can reconstruct from aggregate token buckets and leaves account-specific billing adjustments outside the main product story."
+  },
+  "socialPositioning": {
+    "primaryHeadline": "See what builders are coding with AI right now.",
+    "subhead": "NowCoding turns AI coding activity into a live profile, shareable status card, and social proof across GitHub and the open web.",
+    "socialProofSignals": {
+      "codingNow": "Coding now",
+      "currentProject": "Current project",
+      "aiAssistedStreak": "AI-assisted streak",
+      "timeSaved": "Time saved",
+      "readmeCard": "README card",
+      "shareImage": "Share image"
+    },
+    "shareDestinations": {
+      "githubReadme": "GitHub README",
+      "xTwitter": "X / Twitter",
+      "personalSite": "Personal site",
+      "teamProfile": "Team profile"
+    },
+    "privacyPromises": {
+      "noPrompts": "No prompts, code, or completions are uploaded.",
+      "privateProjects": "Project names can stay private.",
+      "pauseLive": "Live status can be paused.",
+      "arenaOptIn": "Arena is opt-in."
+    },
+    "features": {
+      "livePresence": {
+        "title": "Live presence",
+        "body": "Show whether you are coding now, recently active, or away."
+      },
+      "shareableProfile": {
+        "title": "Shareable profile",
+        "body": "Give every builder a public AI coding profile with cards and badges."
+      },
+      "socialProof": {
+        "title": "Social proof",
+        "body": "Use streaks, time saved, milestones, and activity cards to make progress visible."
+      },
+      "usageDetails": {
+        "title": "Usage details",
+        "body": "Inspect tools, models, tokens, and cost when you need the deeper breakdown."
+      }
+    }
+  },
+  "publicSurface": {
+    "hidden": "hidden",
+    "estimatedSuffix": "estimated",
+    "invalidCostLabel": "$0.00 estimated",
+    "tooManyTokens": "too many",
+    "unknown": "unknown",
+    "noPatternYet": "No pattern yet",
+    "streakDaySuffix": "d",
+    "approximatePrefix": "~",
+    "minuteUnit": "min",
+    "hourUnit": "hrs",
+    "numberLocale": "en-US",
+    "liveStatus": {
+      "live": "Coding now",
+      "recent": "Active recently",
+      "idle": "Idle today",
+      "inactive": "Inactive",
+      "private": "Live hidden"
+    },
+    "livePresence": {
+      "live": "Coding now",
+      "liveWithSource": "Coding now with {source}",
+      "recent": "Recently coding",
+      "recentWithSource": "Recently coding with {source}",
+      "idle": "Taking a break",
+      "idleWithSource": "Taking a break from {source}",
+      "private": "Live status private",
+      "inactive": "Away from coding"
+    }
+  },
+  "usageDashboard": {
+    "title": "Usage details",
+    "description": "A deeper breakdown behind your public NowCoding presence.",
+    "cards": {
+      "tokens": "Tokens",
+      "estimatedCost": "Estimated cost",
+      "activeTime": "Active time",
+      "topModel": "Top model"
+    },
+    "totalDetail": "{period} total",
+    "sessionsDetail": "{count} sessions",
+    "shareDetail": "{share} share",
+    "none": "None",
+    "hidden": "Hidden",
+    "costLabels": {
+      "estimated": "estimated",
+      "hidden": "hidden"
+    }
+  },
+  "modelPricing": {
+    "perMillionTokens": "/ 1M"
+  },
+  "nav": {
+    "home": "Home",
+    "setup": "Setup",
+    "usage": "Usage",
+    "models": "Models"
+  }
+}

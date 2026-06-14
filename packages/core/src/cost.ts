@@ -1,4 +1,4 @@
-import { MODEL_PRICES, type ModelPrice, TOKENS_PER_MILLION } from './model-prices.js';
+import { MODEL_PRICES, type ModelPrice, TOKENS_PER_MILLION } from './model-prices';
 import { type CostLabel, PRICE_VERSION } from './schemas';
 
 export type { ModelPrice };

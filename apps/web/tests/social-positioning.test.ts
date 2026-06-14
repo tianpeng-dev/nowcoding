@@ -6,6 +6,7 @@ import {
   PRIVACY_PROMISES,
   SHARE_DESTINATIONS,
   SOCIAL_PROOF_SIGNALS,
+  buildSocialPositioningCopy,
 } from '../lib/social-positioning';
 
 describe('social positioning', () => {
@@ -53,5 +54,20 @@ describe('social positioning', () => {
       'Usage details',
     ]);
     expect(HOMEPAGE_SUBHEAD).toContain('live profile');
+  });
+
+  it('can build locale-aware homepage positioning copy', () => {
+    const copy = buildSocialPositioningCopy({
+      primaryHeadline: '看看开发者此刻正在用 AI 编写什么。',
+      subhead: 'NowCoding 把 AI 编码动态转化为实时主页。',
+      socialProofSignals: ['正在编码', '当前项目'],
+      shareDestinations: ['GitHub README', '个人网站'],
+      privacyPromises: ['不会上传 prompt、代码或补全内容。'],
+      features: [{ title: '实时状态', body: '展示你正在编码。' }],
+    });
+
+    expect(copy.primaryHeadline).toContain('此刻');
+    expect(copy.shareDestinations).toContain('GitHub README');
+    expect(copy.features[0]).toEqual({ title: '实时状态', body: '展示你正在编码。' });
   });
 });

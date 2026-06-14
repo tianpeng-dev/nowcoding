@@ -8,8 +8,16 @@ export interface SourceSlice {
   tokens: number;
 }
 
-export function SourceBars({ data }: { data: SourceSlice[] }) {
-  if (data.length === 0) return <p className="text-sm text-neutral-500">No tools yet.</p>;
+export function SourceBars({
+  data,
+  emptyLabel = 'No tools yet.',
+  valueLabel = 'tokens',
+}: {
+  data: SourceSlice[];
+  emptyLabel?: string;
+  valueLabel?: string;
+}) {
+  if (data.length === 0) return <p className="text-sm text-neutral-500">{emptyLabel}</p>;
   const top = data.slice(0, 8);
   const activeColor = getAiCodingThemeColor(top[0]?.source ?? '');
   return (
@@ -43,7 +51,7 @@ export function SourceBars({ data }: { data: SourceSlice[] }) {
             }}
             labelStyle={{ color: '#f5f5f5' }}
             itemStyle={{ color: '#f5f5f5' }}
-            formatter={(v: number) => [`${v.toLocaleString()} tokens`, 'tokens']}
+            formatter={(v: number) => [`${v.toLocaleString()} ${valueLabel}`, valueLabel]}
           />
           <Bar dataKey="tokens" radius={[0, 4, 4, 0]}>
             {top.map((slice) => (

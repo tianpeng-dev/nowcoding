@@ -34,6 +34,7 @@ export interface SetupVercelEnv {
 export interface SetupStatusInput {
   env: Partial<Env>;
   vercel: SetupVercelEnv;
+  messages?: SetupStatusMessages;
 }
 
 export interface SetupStatusCard {
@@ -64,6 +65,79 @@ export interface SetupStatus {
   parsers: SetupParserRow[];
 }
 
+export interface SetupStatusMessages {
+  primaryActionLabel: string;
+  statusCards: {
+    database: {
+      label: string;
+      ready: string;
+      missing: string;
+    };
+    token: {
+      label: string;
+      ready: string;
+      missing: string;
+      malformed: string;
+    };
+    endpoint: {
+      label: string;
+    };
+    profile: {
+      label: string;
+      default: string;
+      configured: string;
+    };
+  };
+  privacyRows: {
+    projectNames: string;
+    hostname: string;
+    estimatedCost: string;
+    liveStatus: string;
+    uploadedWhenAllowed: string;
+    hidden: string;
+    hiddenPublicly: string;
+    visibleAsEstimated: string;
+    visible: string;
+  };
+}
+
+export const DEFAULT_SETUP_STATUS_MESSAGES = {
+  primaryActionLabel: 'Start broadcasting',
+  statusCards: {
+    database: {
+      label: 'Database',
+      ready: 'DATABASE_URL is configured. Do not expose the connection string.',
+      missing: 'DATABASE_URL is missing. Add a Supabase Postgres pooler URL, then redeploy.',
+    },
+    token: {
+      label: 'API token',
+      ready: 'NOWCODING_API_TOKEN is configured. The setup page never displays it.',
+      missing: 'NOWCODING_API_TOKEN is missing. Generate one locally and add it in Vercel.',
+      malformed:
+        'NOWCODING_API_TOKEN is malformed. Generate a new one with npx nowcoding gen-token.',
+    },
+    endpoint: {
+      label: 'Endpoint',
+    },
+    profile: {
+      label: 'Profile',
+      default: 'NOWCODING_USERNAME is using the default value. Set your public handle.',
+      configured: 'Public handle is {username}.',
+    },
+  },
+  privacyRows: {
+    projectNames: 'Project names',
+    hostname: 'Hostname',
+    estimatedCost: 'Estimated cost',
+    liveStatus: 'Live status',
+    uploadedWhenAllowed: 'uploaded when local config allows',
+    hidden: 'hidden',
+    hiddenPublicly: 'hidden publicly',
+    visibleAsEstimated: 'visible as estimated',
+    visible: 'visible',
+  },
+} as const satisfies SetupStatusMessages;
+
 export function resolvePublicOrigin(input: {
   websiteUrl?: string;
   vercelProjectProductionUrl?: string;
@@ -82,6 +156,7 @@ export function resolvePublicOrigin(input: {
 }
 
 export function buildSetupStatus(input: SetupStatusInput): SetupStatus {
+  const messages = input.messages ?? DEFAULT_SETUP_STATUS_MESSAGES;
   const endpointUrl = resolvePublicOrigin({
     websiteUrl: input.env.NOWCODING_WEBSITE_URL,
     vercelProjectProductionUrl: input.vercel.vercelProjectProductionUrl,
@@ -96,60 +171,68 @@ export function buildSetupStatus(input: SetupStatusInput): SetupStatus {
   return {
     endpointUrl,
     dashboardUrl: 'https://vercel.com/dashboard',
-    primaryActionLabel: 'Start broadcasting',
+    primaryActionLabel: messages.primaryActionLabel,
     primaryCommands: selfHostedBroadcastCommands(endpointUrl),
     sourceCommands: [...SOURCE_VERIFY_COMMANDS],
     statusCards: [
       {
         key: 'database',
-        label: 'Database',
+        label: messages.statusCards.database.label,
         ok: dbSet,
-        detail: dbSet
-          ? 'DATABASE_URL is configured. Do not expose the connection string.'
-          : 'DATABASE_URL is missing. Add a Supabase Postgres pooler URL, then redeploy.',
+        detail: dbSet ? messages.statusCards.database.ready : messages.statusCards.database.missing,
       },
       {
         key: 'token',
-        label: 'API token',
+        label: messages.statusCards.token.label,
         ok: tokenSet,
         detail: tokenMalformed
-          ? 'NOWCODING_API_TOKEN is malformed. Generate a new one with npx nowcoding gen-token.'
+          ? messages.statusCards.token.malformed
           : tokenSet
-            ? 'NOWCODING_API_TOKEN is configured. The setup page never displays it.'
-            : 'NOWCODING_API_TOKEN is missing. Generate one locally and add it in Vercel.',
+            ? messages.statusCards.token.ready
+            : messages.statusCards.token.missing,
       },
       {
         key: 'endpoint',
-        label: 'Endpoint',
+        label: messages.statusCards.endpoint.label,
         ok: endpointUrl.startsWith('https://'),
         detail: endpointUrl,
       },
       {
         key: 'profile',
-        label: 'Profile',
+        label: messages.statusCards.profile.label,
         ok: username !== 'alice',
         detail:
           username === 'alice'
-            ? 'NOWCODING_USERNAME is using the default value. Set your public handle.'
-            : `Public handle is ${username}.`,
+            ? messages.statusCards.profile.default
+            : interpolate(messages.statusCards.profile.configured, { username }),
       },
     ],
     privacyRows: [
       {
-        label: 'Project names',
-        value: input.env.NOWCODING_UPLOAD_PROJECT ? 'uploaded when local config allows' : 'hidden',
+        label: messages.privacyRows.projectNames,
+        value: input.env.NOWCODING_UPLOAD_PROJECT
+          ? messages.privacyRows.uploadedWhenAllowed
+          : messages.privacyRows.hidden,
       },
       {
-        label: 'Hostname',
-        value: input.env.NOWCODING_UPLOAD_HOSTNAME ? 'uploaded when local config allows' : 'hidden',
+        label: messages.privacyRows.hostname,
+        value: input.env.NOWCODING_UPLOAD_HOSTNAME
+          ? messages.privacyRows.uploadedWhenAllowed
+          : messages.privacyRows.hidden,
       },
       {
-        label: 'Estimated cost',
-        value: input.env.NOWCODING_SHOW_COST === false ? 'hidden publicly' : 'visible as estimated',
+        label: messages.privacyRows.estimatedCost,
+        value:
+          input.env.NOWCODING_SHOW_COST === false
+            ? messages.privacyRows.hiddenPublicly
+            : messages.privacyRows.visibleAsEstimated,
       },
       {
-        label: 'Live status',
-        value: input.env.NOWCODING_SHOW_LIVE === false ? 'hidden publicly' : 'visible',
+        label: messages.privacyRows.liveStatus,
+        value:
+          input.env.NOWCODING_SHOW_LIVE === false
+            ? messages.privacyRows.hiddenPublicly
+            : messages.privacyRows.visible,
       },
     ],
     parsers: SETUP_PARSER_SOURCES.map((source) => ({
@@ -157,6 +240,10 @@ export function buildSetupStatus(input: SetupStatusInput): SetupStatus {
       status: 'waiting',
     })),
   };
+}
+
+function interpolate(template: string, values: Record<string, string>): string {
+  return template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? `{${key}}`);
 }
 
 function normalizeOrigin(value: string | undefined): string | null {

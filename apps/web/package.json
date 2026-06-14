@@ -8,6 +8,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:i18n": "vitest run --root ../.. apps/web/tests/i18n-messages.test.ts",
+    "test:i18n:routing": "vitest run --root ../.. apps/web/tests/i18n-routing.test.ts",
     "lint": "biome check .",
     "clean": "rm -rf .next .turbo"
   },
@@ -17,18 +19,19 @@
     "@nowcoding/db": "workspace:*",
     "drizzle-orm": "^0.38.2",
     "next": "^16.0.0",
-    "satori": "^0.12.2",
+    "next-intl": "^4.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "recharts": "^2.15.0",
+    "satori": "^0.12.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
     "postcss": "^8.5.1",
+    "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2"
   }
 }

@@ -7,9 +7,17 @@ export interface SparklinePoint {
   tokens: number;
 }
 
-export function SparklineChart({ data }: { data: SparklinePoint[] }) {
+export function SparklineChart({
+  data,
+  emptyLabel = 'No activity yet.',
+  valueLabel = 'tokens',
+}: {
+  data: SparklinePoint[];
+  emptyLabel?: string;
+  valueLabel?: string;
+}) {
   if (data.length === 0) {
-    return <p className="text-sm text-neutral-500">No activity yet.</p>;
+    return <p className="text-sm text-neutral-500">{emptyLabel}</p>;
   }
   return (
     <div className="h-48 w-full">
@@ -39,7 +47,7 @@ export function SparklineChart({ data }: { data: SparklinePoint[] }) {
             }}
             labelStyle={{ color: '#f5f5f5' }}
             itemStyle={{ color: '#f5f5f5' }}
-            formatter={(v: number) => [formatShort(v), 'tokens']}
+            formatter={(v: number) => [formatShort(v), valueLabel]}
           />
           <Area
             type="monotone"

@@ -1,0 +1,271 @@
+{
+  "common": {
+    "brand": "NowCoding",
+    "language": "语言",
+    "english": "English",
+    "simplifiedChinese": "简体中文"
+  },
+  "home": {
+    "title": "NowCoding",
+    "headline": "看看人们此刻正在创造什么",
+    "subtitle": "NowCoding 把实时编码动态转化为可传播的社交主页，呈现当下正在发生的创造力。",
+    "primaryCta": "查看使用情况",
+    "secondaryCta": "设置 NowCoding",
+    "profileEyebrow": "开发者主页",
+    "readmeCard": "README 卡片",
+    "openCard": "打开卡片",
+    "readmeCardAlt": "{name} 的 NowCoding README 卡片",
+    "shareLinks": "分享链接",
+    "liveBadge": "实时 Badge",
+    "streakBadge": "连续编码 Badge",
+    "share": "分享",
+    "githubReadme": "GitHub README",
+    "personalSite": "个人网站",
+    "stats": {
+      "live": "实时状态",
+      "streak": "连续天数",
+      "timeSaved": "节省时间",
+      "today": "今日",
+      "last7Days": "过去 7 天",
+      "peakActivity": "高峰时段",
+      "estimatedCost": "预估成本"
+    },
+    "tokensUnit": "tokens",
+    "emptyPrefix": "还没有编码动态。运行",
+    "emptyMiddle": "或",
+    "emptySuffix": "来填充这个主页。",
+    "activityProof": "活动证明",
+    "activityProofDescription": "公开主页背后的详细使用轨迹。",
+    "usageDetails": "使用详情",
+    "allTimeTokens": "累计 {tokens} tokens",
+    "sevenDayActivity": "7 天活动",
+    "models": "模型",
+    "sources": "来源",
+    "charts": {
+      "activityEmpty": "暂无活动数据。",
+      "modelsEmpty": "暂无模型数据。",
+      "sourcesEmpty": "暂无来源数据。",
+      "valueLabel": "个 token"
+    },
+    "embed": "嵌入"
+  },
+  "setup": {
+    "title": "设置 NowCoding",
+    "headline": "把本地编码动态连接到可分享的 Now 主页",
+    "description": "按照设置流程发布编码动态，不改变现有开发工作流。",
+    "eyebrow": "设置向导",
+    "pageHeadline": "开始广播你的 AI 编码状态",
+    "intro": "欢迎，{name}。CLI 同步后，NowCoding 会发布实时状态、卡片和 Badge；此设置页面只检查就绪状态，不展示任何密钥值。",
+    "ready": "就绪",
+    "needsSetup": "需要设置",
+    "statusCards": {
+      "database": {
+        "label": "数据库",
+        "ready": "DATABASE_URL 已配置。不要暴露连接字符串。",
+        "missing": "缺少 DATABASE_URL。添加 Supabase Postgres pooler URL 后重新部署。"
+      },
+      "token": {
+        "label": "API token",
+        "ready": "NOWCODING_API_TOKEN 已配置。设置页面永远不会展示它。",
+        "missing": "缺少 NOWCODING_API_TOKEN。请在本地生成并添加到 Vercel。",
+        "malformed": "NOWCODING_API_TOKEN 格式不正确。请用 npx nowcoding gen-token 重新生成。"
+      },
+      "endpoint": {
+        "label": "端点"
+      },
+      "profile": {
+        "label": "主页",
+        "default": "NOWCODING_USERNAME 仍在使用默认值。请设置你的公开 handle。",
+        "configured": "公开 handle 为 {username}。"
+      }
+    },
+    "primaryActionLabel": "开始广播",
+    "primaryCommandDescription": "安装全局 CLI，初始化此部署端点，并启动后台守护进程，让公开状态保持新鲜。",
+    "sourceCommandTitle": "验证开源采集器",
+    "sourceCommandDescription": "在信任它读取本地活动前，先从 GitHub 源码审查并构建采集器。",
+    "privacyGates": "隐私开关",
+    "privacyRows": {
+      "projectNames": "项目名称",
+      "hostname": "主机名",
+      "estimatedCost": "预估成本",
+      "liveStatus": "实时状态",
+      "uploadedWhenAllowed": "本地配置允许时上传",
+      "hidden": "隐藏",
+      "hiddenPublicly": "公开隐藏",
+      "visibleAsEstimated": "以预估值展示",
+      "visible": "可见"
+    },
+    "parserReadiness": "解析器就绪状态",
+    "parserWaiting": "等待中",
+    "deploySettings": "部署设置",
+    "deploySettingsDescription": "在 Vercel 管理缺失的环境变量和存储。",
+    "openVercelDashboard": "打开 Vercel 控制台",
+    "afterFirstSync": "首次同步后",
+    "publicProfile": "公开主页",
+    "readmeCard": "README 卡片",
+    "shareImage": "分享图片"
+  },
+  "usage": {
+    "title": "使用情况",
+    "headline": "让你的编码动态可被分享",
+    "description": "追踪能在社交传播中呈现当前工作状态的关键信号。",
+    "eyebrow": "分析",
+    "pageHeadline": "使用详情",
+    "pageDescription": "公开 NowCoding 状态背后的更深入拆解。",
+    "periodAria": "使用周期",
+    "periods": {
+      "today": "今日",
+      "sevenDays": "7 天",
+      "thirtyDays": "30 天",
+      "all": "全部"
+    },
+    "viewPublicPresence": "查看公开状态",
+    "cards": {
+      "tokens": "Tokens",
+      "estimatedCost": "预估成本",
+      "activeTime": "活跃时间",
+      "topModel": "常用模型"
+    },
+    "totalDetail": "{period} 合计",
+    "sessionsDetail": "{count} 个会话",
+    "shareDetail": "占比 {share}",
+    "none": "无",
+    "hidden": "已隐藏",
+    "costHidden": "此主页隐藏了成本信息。",
+    "sections": {
+      "tokens": "Tokens",
+      "cost": "成本",
+      "models": "模型",
+      "sources": "来源"
+    },
+    "empty": {
+      "missingDatabase": "连接 DATABASE_URL 后，此主页才能显示私有使用分析。",
+      "loadFailed": "当前无法加载使用分析。",
+      "ready": "这个周期还没有编码动态。"
+    },
+    "charts": {
+      "activityEmpty": "暂无活动数据。",
+      "modelsEmpty": "暂无模型数据。",
+      "sourcesEmpty": "暂无来源数据。",
+      "valueLabel": "个 token"
+    }
+  },
+  "models": {
+    "title": "模型",
+    "headline": "编码动态中的模型上下文",
+    "description": "查看模型使用与价格信息，同时保持公开 API 契约不变。",
+    "eyebrow": "可信参考",
+    "pageHeadline": "模型价格",
+    "pageDescription": "NowCoding 使用这些公开的按 token 预估价格来标记使用成本。此页面用于透明说明，不承诺供应商账单在每个账号、地区、折扣或请求模式下都完全一致。",
+    "currentPriceTable": "当前价格表",
+    "priceVersion": "价格版本 {version}",
+    "suggestCorrection": "建议修正价格",
+    "columns": {
+      "model": "模型",
+      "input": "输入",
+      "cachedInput": "缓存输入",
+      "output": "输出"
+    },
+    "estimatorNote": "估算器刻意保持保守：它只发布 NowCoding 能从聚合 token 桶重建的价格表，并把账号专属账单调整留在核心产品叙事之外。"
+  },
+  "socialPositioning": {
+    "primaryHeadline": "看看开发者此刻正在用 AI 编写什么。",
+    "subhead": "NowCoding 把 AI 编码动态转化为实时主页、可分享状态卡片，以及 GitHub 和开放网络上的社交证明。",
+    "socialProofSignals": {
+      "codingNow": "正在编码",
+      "currentProject": "当前项目",
+      "aiAssistedStreak": "AI 辅助连续记录",
+      "timeSaved": "节省时间",
+      "readmeCard": "README 卡片",
+      "shareImage": "分享图片"
+    },
+    "shareDestinations": {
+      "githubReadme": "GitHub README",
+      "xTwitter": "X / Twitter",
+      "personalSite": "个人网站",
+      "teamProfile": "团队主页"
+    },
+    "privacyPromises": {
+      "noPrompts": "不会上传 prompt、代码或补全内容。",
+      "privateProjects": "项目名称可以保持私密。",
+      "pauseLive": "实时状态可以暂停。",
+      "arenaOptIn": "Arena 默认不启用。"
+    },
+    "features": {
+      "livePresence": {
+        "title": "实时状态",
+        "body": "展示你正在编码、最近活跃，还是暂时离开。"
+      },
+      "shareableProfile": {
+        "title": "可分享主页",
+        "body": "为每位开发者提供公开 AI 编码主页，并配套卡片和 Badge。"
+      },
+      "socialProof": {
+        "title": "社交证明",
+        "body": "用连续记录、节省时间、里程碑和活动卡片让进展可见。"
+      },
+      "usageDetails": {
+        "title": "使用详情",
+        "body": "需要更深拆解时，可查看工具、模型、tokens 和成本。"
+      }
+    }
+  },
+  "publicSurface": {
+    "hidden": "已隐藏",
+    "estimatedSuffix": "预估",
+    "invalidCostLabel": "$0.00 预估",
+    "tooManyTokens": "数量过大",
+    "unknown": "未知",
+    "noPatternYet": "暂无规律",
+    "streakDaySuffix": "天",
+    "approximatePrefix": "约 ",
+    "minuteUnit": "分钟",
+    "hourUnit": "小时",
+    "numberLocale": "zh-CN",
+    "liveStatus": {
+      "live": "正在编码",
+      "recent": "最近活跃",
+      "idle": "今日空闲",
+      "inactive": "未活跃",
+      "private": "实时状态已隐藏"
+    },
+    "livePresence": {
+      "live": "正在编码",
+      "liveWithSource": "正在使用 {source} 编码",
+      "recent": "最近在编码",
+      "recentWithSource": "最近在使用 {source} 编码",
+      "idle": "正在休息",
+      "idleWithSource": "暂时离开 {source}",
+      "private": "实时状态私密",
+      "inactive": "暂未编码"
+    }
+  },
+  "usageDashboard": {
+    "title": "使用详情",
+    "description": "公开 NowCoding 状态背后的更深入拆解。",
+    "cards": {
+      "tokens": "Tokens",
+      "estimatedCost": "预估成本",
+      "activeTime": "活跃时间",
+      "topModel": "常用模型"
+    },
+    "totalDetail": "{period} 合计",
+    "sessionsDetail": "{count} 个会话",
+    "shareDetail": "占比 {share}",
+    "none": "无",
+    "hidden": "已隐藏",
+    "costLabels": {
+      "estimated": "预估",
+      "hidden": "已隐藏"
+    }
+  },
+  "modelPricing": {
+    "perMillionTokens": "/ 100 万 tokens"
+  },
+  "nav": {
+    "home": "首页",
+    "setup": "设置",
+    "usage": "使用情况",
+    "models": "模型"
+  }
+}
