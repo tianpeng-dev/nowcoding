@@ -17,6 +17,16 @@ SVG 卡片与徽章。你可以直接使用官方 Cloud，也可以自托管开�
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftianpeng-dev%2Fnowcoding&env=NOWCODING_USERNAME,NOWCODING_API_TOKEN,CRON_SECRET&envDescription=Set%20your%20public%20NowCoding%20username%2C%20paste%20a%20secret%20token%20from%20%60npx%20nowcoding%20gen-token%60%2C%20and%20add%20a%20strong%20random%20cron%20secret.&envLink=https%3A%2F%2Fgithub.com%2Ftianpeng-dev%2Fnowcoding%2Fblob%2Fmain%2Fdocs%2Fenv.md&project-name=nowcoding&repository-name=nowcoding)
 
+## 安装 Magpie 插件
+
+从仓库根目录执行。安装后打开 Magpie 侧栏中的 NowCoding，选择允许读取的工具即可查看本机用量。
+
+```sh
+pnpm install --frozen-lockfile
+pnpm --filter magpie-nowcoding build
+magpie plugin add ./apps/magpie-plugin
+```
+
 ## 能展示什么
 
 - 今日、最近 7 天、最近 30 天和总计 token。
@@ -41,10 +51,10 @@ nowcoding status
 官方 Cloud 计划使用 `https://nowcoding.cc`：
 
 - `https://nowcoding.cc`：产品首页、登录和账号入口。
-- `https://nowcoding.cc/<username>`：官方公开主页。
-- `https://nowcoding.cc/<username>/card.svg`：README SVG 卡片。
-- `https://nowcoding.cc/<username>/badge/<type>.svg`：SVG 徽章。
-- `https://nowcoding.cc/arena`：可选加入的公开排行榜。
+- `https://nowcoding.cc/u/<username>`：官方公开主页。
+- `https://nowcoding.cc/u/<username>/card.svg`：README SVG 卡片。
+- `https://nowcoding.cc/u/<username>/badge/<type>.svg`：SVG 徽章。
+- `https://nowcoding.cc/leaderboard`：可选加入的公开排行榜。
 
 `nowcoding login` 会打开 GitHub OAuth，并用受限的 NowCoding device token
 把本机 CLI 绑定到你的 Cloud 账号。正常路径中，OAuth 成功后 CLI 应直接登录成功；
@@ -184,7 +194,7 @@ NowCoding 默认采用 fail-closed 隐私模型：
 - 自托管 Web、ingest API、profile、SVG card、badge、heatmap 和 JSON endpoint。
 - shared schema、成本估算、公开渲染组件和自托管部署文档。
 
-私有 `nowcoding-cloud` 仓库包含：
+同一公开仓库中的 `apps/cloud` 提供以下功能：
 
 - GitHub OAuth、官方账号、全局 username、device token。
 - `https://nowcoding.cc` 官方 profile/card/badge 服务。

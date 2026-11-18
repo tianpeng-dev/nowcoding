@@ -94,6 +94,7 @@ export function formatPublicLeaderboardValue({
     case 'streak':
       return `${Math.round(value)}d`;
     case 'time_saved':
+      value = Number.isFinite(value) ? Math.max(0, value) : 0;
       if (value < 60) {
         return `${Math.round(value).toLocaleString('en-US')}m`;
       }

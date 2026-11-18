@@ -22,7 +22,8 @@ export default defineConfig({
     environment: 'node',
     include: [
       'packages/*/tests/**/*.test.ts',
-      'apps/*/tests/**/*.test.ts',
+      'apps/*/tests/**/*.test.{ts,mjs}',
+      'scripts/**/*.test.ts',
       'scripts/**/*.test.mjs',
     ],
     coverage: {

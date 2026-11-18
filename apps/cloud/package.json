@@ -1,0 +1,28 @@
+{
+  "name": "@nowcoding/cloud",
+  "private": true,
+  "scripts": {
+    "build": "next build --webpack",
+    "dev": "next dev",
+    "test:i18n:routing": "vitest run tests/i18n-routing.test.mjs",
+    "test:i18n": "vitest run tests/i18n-messages.test.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@nowcoding/cloud-core": "workspace:*",
+    "@nowcoding/cloud-db": "workspace:*",
+    "@nowcoding/core": "workspace:*",
+    "drizzle-orm": "^0.38.2",
+    "next": "^16.0.0",
+    "next-intl": "^4.13.0",
+    "postgres": "^3.4.9",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0"
+  }
+}

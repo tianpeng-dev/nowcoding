@@ -33,6 +33,33 @@ export const ingestPayloadSchema = z.object({
   sessions: z.array(sessionWireSchema).max(20_000).optional(),
 });
 
+const safeCount = z.number().int().nonnegative().safe();
+export const cloudIngestPayloadSchema = ingestPayloadSchema.extend({
+  buckets: z
+    .array(
+      bucketWireSchema.extend({
+        inputTokens: safeCount,
+        outputTokens: safeCount,
+        totalTokens: safeCount,
+        cachedInputTokens: safeCount.default(0),
+        reasoningOutputTokens: safeCount.default(0),
+      }),
+    )
+    .max(20_000),
+  sessions: z
+    .array(
+      sessionWireSchema.extend({
+        durationSeconds: safeCount,
+        activeSeconds: safeCount,
+        messageCount: safeCount,
+        userMessageCount: safeCount,
+        userPromptHours: z.array(safeCount).length(24),
+      }),
+    )
+    .max(20_000)
+    .optional(),
+});
+
 export type IngestPayload = z.infer<typeof ingestPayloadSchema>;
 export type BucketWire = z.infer<typeof bucketWireSchema>;
 export type SessionWire = z.infer<typeof sessionWireSchema>;

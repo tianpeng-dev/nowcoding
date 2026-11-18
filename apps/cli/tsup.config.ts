@@ -7,6 +7,9 @@ export default defineConfig({
   outDir: 'dist',
   clean: true,
   noExternal: [/^@nowcoding\//],
+  banner: {
+    js: "import { createRequire as createNodeRequire } from 'node:module'; const require = createNodeRequire(import.meta.url);",
+  },
   splitting: false,
   shims: false,
   dts: false,
