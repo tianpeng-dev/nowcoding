@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="nowcoding-page" content="__PAGE_TOKEN__" />
+    <title>NowCoding</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <small>NowCoding</small>
+          <h1>编码活动</h1>
+        </div>
+        <button id="refresh">刷新用量</button>
+      </header>
+      <nav aria-label="编码活动">
+        <button data-tab="activity" aria-pressed="true">本机活动</button
+        ><button data-tab="device" aria-pressed="false">同步与设备</button
+        ><button data-tab="public" aria-pressed="false">公开展示</button>
+      </nav>
+      <p id="status" role="status" aria-live="polite"></p>
+      <section id="activity">
+        <div class="metrics">
+          <article>
+            <h2>今日 Token</h2>
+            <strong id="today">—</strong>
+          </article>
+          <article>
+            <h2>近七天估算费用</h2>
+            <strong id="cost">—</strong>
+          </article>
+          <article>
+            <h2>近七天活跃天数</h2>
+            <strong id="active">—</strong>
+          </article>
+        </div>
+        <p id="unpriced"></p>
+        <div class="columns">
+          <article>
+            <h2>每日用量</h2>
+            <ol id="days"></ol>
+          </article>
+          <article>
+            <h2>模型分布</h2>
+            <ol id="models"></ol>
+          </article>
+        </div>
+        <details id="tools">
+          <summary>允许读取的本机工具</summary>
+          <p>只读取所选工具的编码活动。选择后即可在本机查看。</p>
+          <form id="sources">
+            <fieldset id="choices" aria-label="编码工具"></fieldset>
+            <button id="save-sources" type="button">保存选择</button>
+          </form>
+        </details>
+      </section>
+      <section id="device" hidden>
+        <article>
+          <h2>设备连接</h2>
+          <p id="connection"></p>
+          <p id="sync-time"></p>
+          <p id="sync-error"></p>
+          <button id="sync">同步所选工具</button>
+          <button data-open="devices">管理 Cloud 设备</button>
+        </article>
+        <article>
+          <h2>连接 NowCoding Cloud</h2>
+          <p>
+            绑定设备会打开系统浏览器。同步会上传所选工具的用量汇总和匿名会话统计。
+          </p>
+          <label
+            ><input
+              type="checkbox"
+              id="arena"
+            />加入公开排行榜，展示账号、头像、Token、估算费用、活跃时间和连续天数</label
+          ><button id="login">使用 GitHub 登录</button>
+        </article>
+        <details>
+          <summary>连接自托管服务</summary>
+          <form id="selfhost">
+            <label
+              >服务器地址<input
+                name="endpoint"
+                type="url"
+                required
+                placeholder="https://your-domain.example" /></label
+            ><label
+              >接收令牌<input
+                name="token"
+                type="password"
+                autocomplete="off"
+                required
+                placeholder="nc_live_…" /></label
+            ><button id="connect-self" type="button">连接设备</button>
+          </form>
+        </details>
+      </section>
+      <section id="public" hidden>
+        <article>
+          <h2>公开主页与 README 卡片</h2>
+          <p id="share-state"></p>
+          <div id="share">
+            <button data-open="profile">打开主页</button>
+            <button data-open="card">预览卡片</button
+            ><label
+              >GitHub README 嵌入代码<textarea
+                id="markdown"
+                readonly
+                rows="3"
+              ></textarea></label
+            ><button id="copy">复制嵌入代码</button>
+            <button data-open="settings">管理公开字段与排行榜</button>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

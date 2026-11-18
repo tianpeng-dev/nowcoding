@@ -4,6 +4,8 @@
   "files": {
     "ignore": [
       "**/node_modules",
+      "**/.scratch",
+      "apps/cloud/next-env.d.ts",
       "**/.next",
       "**/.turbo",
       "**/dist",

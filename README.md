@@ -18,6 +18,16 @@ self-host the open-source web app when you want to own the full deployment.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftianpeng-dev%2Fnowcoding&env=NOWCODING_USERNAME,NOWCODING_API_TOKEN,CRON_SECRET&envDescription=Set%20your%20public%20NowCoding%20username%2C%20paste%20a%20secret%20token%20from%20%60npx%20nowcoding%20gen-token%60%2C%20and%20add%20a%20strong%20random%20cron%20secret.&envLink=https%3A%2F%2Fgithub.com%2Ftianpeng-dev%2Fnowcoding%2Fblob%2Fmain%2Fdocs%2Fenv.md&project-name=nowcoding&repository-name=nowcoding)
 
+## Install the Magpie plugin
+
+Run these commands at the repository root. Open NowCoding in the Magpie sidebar and select the tools whose activity you want to read.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm --filter magpie-nowcoding build
+magpie plugin add ./apps/magpie-plugin
+```
+
 ## What it shows
 
 - Today, last 7 days, last 30 days, and all-time token totals.
@@ -109,10 +119,10 @@ nowcoding status
 Official Cloud will live under `https://nowcoding.cc`. Planned public surfaces:
 
 - `https://nowcoding.cc` for product, login, and account entry.
-- `https://nowcoding.cc/<username>` for official public profiles.
-- `https://nowcoding.cc/<username>/card.svg` for README cards.
-- `https://nowcoding.cc/<username>/badge/<type>.svg` for badges.
-- `https://nowcoding.cc/arena` for the opt-in public leaderboard.
+- `https://nowcoding.cc/u/<username>` for official public profiles.
+- `https://nowcoding.cc/u/<username>/card.svg` for README cards.
+- `https://nowcoding.cc/u/<username>/badge/<type>.svg` for badges.
+- `https://nowcoding.cc/leaderboard` for the opt-in public leaderboard.
 
 `nowcoding login` opens GitHub OAuth and binds the CLI to your Cloud account
 with a scoped NowCoding device token. The normal path should return directly to
@@ -307,7 +317,7 @@ self-hosted code:
 - Shared schemas, cost estimation, public rendering, and self-host deployment
   docs.
 
-The private `nowcoding-cloud` service owns the hosted network layer:
+The public workspace includes the hosted application in `apps/cloud`:
 
 - GitHub OAuth, official accounts, username ownership, and device tokens.
 - Official profile/card/badge hosting under `https://nowcoding.cc`.
@@ -335,8 +345,7 @@ See [SECURITY.md](SECURITY.md) for the threat model and reporting process.
 ## Deployment
 
 The self-hosted production path is Vercel plus standard Postgres. The hosted
-Cloud V2 path uses Supabase for Auth, Postgres, Edge Functions, and scheduled
-aggregation behind `https://nowcoding.cc`.
+Cloud V2 path uses GitHub OAuth, Postgres and Next.js API routes behind `https://nowcoding.cc`.
 
 1. Fork or clone this repository.
 2. Create a Vercel project from the repo.
@@ -364,7 +373,7 @@ Detailed instructions are in [docs/deploy.md](docs/deploy.md) and
 - [docs/local-dev.md](docs/local-dev.md): first-time local verification.
 - [docs/deploy.md](docs/deploy.md): production deployment.
 - [docs/env.md](docs/env.md): environment variables.
-- [docs/cloud.md](docs/cloud.md): Cloud V2 Supabase-first architecture.
+- [docs/cloud.md](docs/cloud.md): Cloud architecture and device authorization.
 - [docs/migration.md](docs/migration.md): migration notes from vibe-usage.
 - [docs/parsers.md](docs/parsers.md): parser support and contribution guide.
 - [docs/v1.5-backlog.md](docs/v1.5-backlog.md): deferred work.
