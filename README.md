@@ -20,13 +20,13 @@ self-host the open-source web app when you want to own the full deployment.
 
 ## Install the Magpie plugin
 
-Run these commands at the repository root. Open NowCoding in the Magpie sidebar and select the tools whose activity you want to read.
+Enter `magpie-nowcoding` in the plugin installer in Magpie 0.1.4079 or later, or install it from the command line.
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm --filter magpie-nowcoding build
-magpie plugin add ./apps/magpie-plugin
+magpie plugin add npm:magpie-nowcoding
 ```
+
+Open NowCoding in the Magpie sidebar and select the tools to include. To sync your usage to NowCoding Cloud, open the device tab and sign in with GitHub. [Plugin development instructions](apps/magpie-plugin/README.md)
 
 ## What it shows
 

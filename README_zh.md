@@ -19,13 +19,13 @@ SVG 卡片与徽章。你可以直接使用官方 Cloud，也可以自托管开�
 
 ## 安装 Magpie 插件
 
-从仓库根目录执行。安装后打开 Magpie 侧栏中的 NowCoding，选择允许读取的工具即可查看本机用量。
+在 Magpie 0.1.4079 或更高版本的插件安装框中输入 `magpie-nowcoding`，也可以通过命令行安装。
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm --filter magpie-nowcoding build
-magpie plugin add ./apps/magpie-plugin
+magpie plugin add npm:magpie-nowcoding
 ```
+
+打开 Magpie 侧栏中的 NowCoding，选择允许读取的工具即可查看本机用量。如需同步，在「同步与设备」中选择「使用 GitHub 登录」。[插件开发说明](apps/magpie-plugin/README.md)
 
 ## 能展示什么
 
