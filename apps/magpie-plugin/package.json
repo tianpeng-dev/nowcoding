@@ -2,6 +2,14 @@
   "name": "magpie-nowcoding",
   "version": "0.1.0",
   "description": "Local AI coding activity, device sync and public profile cards for Magpie.",
+  "keywords": ["magpie", "magpie-page", "magpie-plugin", "opencode-plugin", "nowcoding"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tianpeng-dev/nowcoding.git",
+    "directory": "apps/magpie-plugin"
+  },
+  "homepage": "https://github.com/tianpeng-dev/nowcoding/tree/main/apps/magpie-plugin",
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",

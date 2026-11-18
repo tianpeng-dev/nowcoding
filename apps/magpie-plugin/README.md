@@ -2,7 +2,13 @@
 
 在 Magpie 侧栏选择允许读取的工具，即可离线查看本机七天的 Token、模型分布和估算费用。连接 Cloud 或自托管设备后，可以同步选中的用量、预览公开卡片、复制 GitHub README 代码，以及在浏览器管理设备和排行榜。
 
-从统一仓库根目录执行：
+在 Magpie 的插件安装框中输入 `magpie-nowcoding`，或使用 Magpie CLI 安装。
+
+```sh
+magpie plugin add npm:magpie-nowcoding
+```
+
+从源码开发时，在仓库根目录执行以下命令。
 
 ```sh
 pnpm install --frozen-lockfile
